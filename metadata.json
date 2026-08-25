@@ -1,0 +1,6 @@
+{
+  "name": "Equitiq - PropTech Investment & Asset Management",
+  "description": "Plataforma premium de inversión inmobiliaria y administración de activos comerciales con simulador de retornos financieros (Cap Rate, Cash-on-Cash, TIR, NOI, Flujos proyectados y análisis de sensibilidad).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
