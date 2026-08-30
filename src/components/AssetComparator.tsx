@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
   GitCompare, 
   Building2, 
@@ -25,34 +25,43 @@ export const AssetComparator: React.FC<AssetComparatorProps> = ({
 }) => {
   const { t, translateCategory } = useLanguage();
   // Up to 3 selected properties
-  const [selectedIds, setSelectedIds] = useState<string[]>(
+  const [selectedIds, setSelectedIds] = useState<string[]>(() =>
     properties.slice(0, 3).map((p) => p.id)
   );
 
   const toggleProperty = (id: string) => {
     if (selectedIds.includes(id)) {
       if (selectedIds.length > 1) {
-        setSelectedIds(selectedIds.filter((item) => item !== id));
+        setSelectedIds((prev) => prev.filter((item) => item !== id));
       }
     } else {
       if (selectedIds.length < 3) {
-        setSelectedIds([...selectedIds, id]);
+        setSelectedIds((prev) => [...prev, id]);
       } else {
-        setSelectedIds([...selectedIds.slice(1), id]);
+        setSelectedIds((prev) => [...prev.slice(1), id]);
       }
     }
   };
 
-  const comparedProps = properties.filter((p) => selectedIds.includes(p.id));
-  const evaluatedProps = comparedProps.map((p) => ({
-    property: p,
-    financials: calculatePropertyFinancials(p),
-  }));
+  const { comparedProps, evaluatedProps, highestCapRate, highestCashOnCash, highestIRR } = useMemo(() => {
+    const compared = properties.filter((p) => selectedIds.includes(p.id));
+    const evaluated = compared.map((p) => ({
+      property: p,
+      financials: calculatePropertyFinancials(p),
+    }));
 
-  // Find best metrics
-  const highestCapRate = Math.max(...evaluatedProps.map((ep) => ep.financials.acquisitionCapRate));
-  const highestCashOnCash = Math.max(...evaluatedProps.map((ep) => ep.financials.cashOnCashReturn));
-  const highestIRR = Math.max(...evaluatedProps.map((ep) => ep.financials.internalRateOfReturn));
+    const maxCap = evaluated.length > 0 ? Math.max(...evaluated.map((ep) => ep.financials.acquisitionCapRate)) : 0;
+    const maxCoC = evaluated.length > 0 ? Math.max(...evaluated.map((ep) => ep.financials.cashOnCashReturn)) : 0;
+    const maxIrr = evaluated.length > 0 ? Math.max(...evaluated.map((ep) => ep.financials.internalRateOfReturn)) : 0;
+
+    return {
+      comparedProps: compared,
+      evaluatedProps: evaluated,
+      highestCapRate: maxCap,
+      highestCashOnCash: maxCoC,
+      highestIRR: maxIrr,
+    };
+  }, [properties, selectedIds]);
 
   return (
     <div className="space-y-8 pb-16 font-sans">

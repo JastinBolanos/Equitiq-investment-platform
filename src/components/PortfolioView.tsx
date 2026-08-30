@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { CommercialProperty, PropertyCategory } from '../types';
 import { calculatePropertyFinancials } from '../services/financial';
 import { PortfolioHeaderStats } from './portfolio/PortfolioHeaderStats';
@@ -25,27 +25,48 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
 
-  // Filter properties
-  const filteredProperties = properties.filter((prop) => {
-    const matchCategory = selectedCategory === 'Todas' || prop.category === selectedCategory;
-    const matchSearch =
-      prop.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      prop.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      prop.country.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      prop.tenants.some((t) => t.name.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchCategory && matchSearch;
-  });
+  // Memoized Filter properties
+  const filteredProperties = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    return properties.filter((prop) => {
+      const matchCategory = selectedCategory === 'Todas' || prop.category === selectedCategory;
+      if (!matchCategory) return false;
+      if (!q) return true;
+      return (
+        prop.name.toLowerCase().includes(q) ||
+        prop.city.toLowerCase().includes(q) ||
+        prop.country.toLowerCase().includes(q) ||
+        prop.tenants.some((t) => t.name.toLowerCase().includes(q))
+      );
+    });
+  }, [properties, selectedCategory, searchQuery]);
 
-  // Aggregated Portfolio Metrics
-  const totalValue = properties.reduce((acc, p) => acc + p.purchasePrice, 0);
-  const totalAreaGLA = properties.reduce((acc, p) => acc + p.grossLeasableAreaM2, 0);
-  const totalNOI = properties.reduce(
-    (acc, p) => acc + calculatePropertyFinancials(p).netOperatingIncomeAnnual,
-    0
-  );
-  const weightedCapRate = totalValue > 0 ? (totalNOI / totalValue) * 100 : 0;
-  const averageOccupancy =
-    properties.reduce((acc, p) => acc + p.occupancyRate, 0) / (properties.length || 1);
+  // Memoized Aggregated Portfolio Metrics
+  const { totalValue, totalAreaGLA, totalNOI, weightedCapRate, averageOccupancy } = useMemo(() => {
+    let val = 0;
+    let gla = 0;
+    let noi = 0;
+    let occSum = 0;
+
+    for (let i = 0; i < properties.length; i++) {
+      const p = properties[i];
+      val += p.purchasePrice;
+      gla += p.grossLeasableAreaM2;
+      noi += calculatePropertyFinancials(p).netOperatingIncomeAnnual;
+      occSum += p.occupancyRate;
+    }
+
+    const capRate = val > 0 ? (noi / val) * 100 : 0;
+    const avgOcc = properties.length > 0 ? occSum / properties.length : 0;
+
+    return {
+      totalValue: val,
+      totalAreaGLA: gla,
+      totalNOI: noi,
+      weightedCapRate: capRate,
+      averageOccupancy: avgOcc,
+    };
+  }, [properties]);
 
   return (
     <div className="space-y-8 pb-16 font-sans">

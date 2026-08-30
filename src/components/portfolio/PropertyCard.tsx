@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { MapPin, Eye, Trash2, ArrowUpRight } from 'lucide-react';
 import { CommercialProperty } from '../../types';
 import { calculatePropertyFinancials } from '../../services/financial';
@@ -12,14 +12,14 @@ interface PropertyCardProps {
   onDeleteProperty: (id: string) => void;
 }
 
-export const PropertyCard: React.FC<PropertyCardProps> = ({
+export const PropertyCard: React.FC<PropertyCardProps> = React.memo(({
   property,
   onSelectForAnalysis,
   onOpenDetailModal,
   onDeleteProperty,
 }) => {
   const { t, translateCategory } = useLanguage();
-  const financials = calculatePropertyFinancials(property);
+  const financials = useMemo(() => calculatePropertyFinancials(property), [property]);
 
   return (
     <div className="rounded-2xl overflow-hidden glass bg-[#0A0A0A]/70 border border-white/10 luxury-card-hover flex flex-col justify-between group">
@@ -29,7 +29,9 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
           <img
             src={property.imageUrl}
             alt={property.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90"
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
             referrerPolicy="no-referrer"
             onError={(e) => {
               e.currentTarget.src =
@@ -177,4 +179,4 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
       </div>
     </div>
   );
-};
+});

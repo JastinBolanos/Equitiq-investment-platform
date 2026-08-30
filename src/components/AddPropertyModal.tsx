@@ -9,6 +9,15 @@ interface AddPropertyModalProps {
   onAddProperty: (newProp: CommercialProperty) => void;
 }
 
+const CATEGORY_DEFAULT_IMAGES: Record<PropertyCategory, string> = {
+  Oficinas: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop',
+  Logístico: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1200&auto=format&fit=crop',
+  Retail: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?q=80&w=1200&auto=format&fit=crop',
+  'Salud & Lab': 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=1200&auto=format&fit=crop',
+  Hospitality: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop',
+  'Uso Mixto': 'https://images.unsplash.com/photo-1577495508048-b635879837f1?q=80&w=1200&auto=format&fit=crop',
+};
+
 export const AddPropertyModal: React.FC<AddPropertyModalProps> = ({
   isOpen,
   onClose,
@@ -29,10 +38,19 @@ export const AddPropertyModal: React.FC<AddPropertyModalProps> = ({
     loanInterestRate: 6.5,
     loanTermYears: 20,
     description: '',
-    imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop',
+    imageUrl: CATEGORY_DEFAULT_IMAGES['Oficinas'],
   });
 
   if (!isOpen) return null;
+
+  const handleCategoryChange = (newCat: PropertyCategory) => {
+    const isCurrentDefault = Object.values(CATEGORY_DEFAULT_IMAGES).includes(formData.imageUrl);
+    setFormData((prev) => ({
+      ...prev,
+      category: newCat,
+      imageUrl: isCurrentDefault || !prev.imageUrl ? CATEGORY_DEFAULT_IMAGES[newCat] : prev.imageUrl,
+    }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -149,7 +167,7 @@ export const AddPropertyModal: React.FC<AddPropertyModalProps> = ({
               <label className="block text-xs uppercase tracking-wider text-neutral-300 mb-1 font-sans">{t.propCategoryLabel}</label>
               <select
                 value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value as PropertyCategory })}
+                onChange={(e) => handleCategoryChange(e.target.value as PropertyCategory)}
                 className="w-full px-3 py-2 rounded-lg bg-[#050505] border border-white/10 text-xs text-white focus:outline-none focus:border-gold cursor-pointer"
               >
                 <option value="Oficinas">{t.catOfficeFull}</option>

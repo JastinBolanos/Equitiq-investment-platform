@@ -529,6 +529,14 @@ export interface Translations {
   authSignOut: string;
   authCreateAccountBadge: string;
   authSuccessToast: string;
+  authPendingTitle: string;
+  authPendingSubtitle: string;
+  authPendingStatusBadge: string;
+  authPendingNotice: string;
+  authPendingFolio: string;
+  authPendingTicket: string;
+  authPendingExploreDemo: string;
+  authPendingNewRequest: string;
 
   // Demo Mode & Workflow Tour
   welcomeDemoSectionTitle: string;
@@ -574,7 +582,7 @@ export const translations: Record<Language, Translations> = {
 
     // Welcome Screen
     welcomeTag: 'Institutional Real Estate Intelligence Platform',
-    welcomeSubtitle: 'Suite financiera de grado institucional para análisis de flujo de caja descontado (DCF), valoraciones de rentas comerciales, underwriting de deuda y matrices de estrés multivariable.',
+    welcomeSubtitle: 'Suite financiera para análisis de flujo de caja descontado (DCF), valoraciones de rentas comerciales, underwriting de deuda y matrices de estrés multivariable.',
     welcomeAumLabel: 'AUM Portafolio Total',
     welcomeCapRateLabel: 'Cap Rate Ponderado',
     welcomeOccupancyLabel: 'Ocupación Media',
@@ -1084,12 +1092,20 @@ export const translations: Record<Language, Translations> = {
     authSignOut: 'Cerrar Sesión',
     authCreateAccountBadge: 'Acceso Exclusivo para Clientes Institucionales',
     authSuccessToast: 'Bienvenido al Portal de Inversiones Institucional',
+    authPendingTitle: 'Solicitud Institucional Recibida',
+    authPendingSubtitle: 'Su expediente ha sido recibido y se encuentra actualmente en lista de espera para validación de acreditación y cumplimiento normativo (KYC).',
+    authPendingStatusBadge: 'ESTADO: EN ESPERA DE REVISIÓN',
+    authPendingNotice: 'La solicitud fue recibida satisfactoriamente por la mesa de admisiones pero aún no ha sido atendida ni aprobada. El acceso directo al portal de clientes permanecerá en espera hasta que el oficial de cumplimiento valide su personería jurídica e idoneidad patrimonial.',
+    authPendingFolio: 'Folio de Admisión',
+    authPendingTicket: 'Ticket Objetivo',
+    authPendingExploreDemo: 'Explorar Plataforma en Modo Demostración',
+    authPendingNewRequest: 'Editar o Enviar Otra Solicitud',
 
     // Demo Mode & Workflow Tour
-    welcomeDemoSectionTitle: 'Ver en Demostración (Sin ser Cliente)',
-    welcomeDemoSectionSubtitle: 'Explora cómo los comités de inversión y fondos operan aquí en modo interactivo antes de registrarte.',
-    welcomeDemoButton: 'Explorar Plataforma en Demostración',
-    welcomeWorkflowTourButton: 'Ver Cómo es el Trabajo Aquí (Tour Guiado)',
+    welcomeDemoSectionTitle: 'Entorno de Demostración para Invitados',
+    welcomeDemoSectionSubtitle: 'Explora de forma interactiva el portafolio comercial, los modelos DCF a 10 años y las matrices de estrés.',
+    welcomeDemoButton: 'Explorar Plataforma en Demo',
+    welcomeWorkflowTourButton: 'Ver Tour del Flujo de Trabajo',
     demoBannerTitle: 'Modo Demostración Activo • Acceso de Invitado',
     demoBannerText: 'Tienes acceso total e interactivo a todos los inmuebles institucionales, modelos DCF y matrices de sensibilidad.',
     demoBannerActionLogin: 'Ingresar como Cliente',
@@ -1128,7 +1144,7 @@ export const translations: Record<Language, Translations> = {
 
     // Welcome Screen
     welcomeTag: 'Institutional Real Estate Intelligence Platform',
-    welcomeSubtitle: 'Institutional-grade financial suite for discounted cash flow (DCF) underwriting, commercial lease analysis, debt covenant stress testing, and multi-variable scenario modeling.',
+    welcomeSubtitle: 'Financial suite for discounted cash flow (DCF) underwriting, commercial lease analysis, debt covenant stress testing, and multi-variable scenario modeling.',
     welcomeAumLabel: 'Total Portfolio AUM',
     welcomeCapRateLabel: 'Weighted Cap Rate',
     welcomeOccupancyLabel: 'Average Occupancy',
@@ -1638,12 +1654,20 @@ export const translations: Record<Language, Translations> = {
     authSignOut: 'Sign Out',
     authCreateAccountBadge: 'Exclusive Access for Institutional Clients',
     authSuccessToast: 'Welcome to the Institutional Investment Portal',
+    authPendingTitle: 'Institutional Application Received',
+    authPendingSubtitle: 'Your application has been received and is currently in the queue awaiting accreditation review and regulatory compliance (KYC).',
+    authPendingStatusBadge: 'STATUS: PENDING COMPLIANCE REVIEW',
+    authPendingNotice: 'The application was successfully received by admissions but has not yet been processed or approved. Direct portal access will remain on hold until our compliance officer verifies your legal entity and investor eligibility.',
+    authPendingFolio: 'Application Reference',
+    authPendingTicket: 'Target Ticket',
+    authPendingExploreDemo: 'Explore Platform in Demo Mode',
+    authPendingNewRequest: 'Edit or Submit Another Request',
 
     // Demo Mode & Workflow Tour
-    welcomeDemoSectionTitle: 'Interactive Demo Mode (Explore as Guest)',
-    welcomeDemoSectionSubtitle: 'Explore how investment committees and private equity funds analyze assets here before creating an account.',
-    welcomeDemoButton: 'Explore Live Platform Demo',
-    welcomeWorkflowTourButton: 'See How It Works Here (Workflow Tour)',
+    welcomeDemoSectionTitle: 'Interactive Demo Mode for Guests',
+    welcomeDemoSectionSubtitle: 'Freely explore commercial assets, 10-year DCF models and stress matrices without prior registration.',
+    welcomeDemoButton: 'Launch Demo Platform',
+    welcomeWorkflowTourButton: 'View Workflow Tour',
     demoBannerTitle: 'Interactive Demo Mode • Guest Access',
     demoBannerText: 'You have full interactive access to all commercial properties, 10-year DCF models, and stress matrices.',
     demoBannerActionLogin: 'Sign In as Client',

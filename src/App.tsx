@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import confetti from 'canvas-confetti';
 import { CommercialProperty, CurrencyConfig } from './types';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
@@ -42,7 +42,7 @@ function AppContent() {
     'portfolio'
   );
 
-  // Authentication and Portfolio custom hooks (Clean Architecture & Separation of Concerns)
+  // Authentication and Portfolio custom hooks
   const { user, login, logout } = useAuthSession();
   const {
     properties,
@@ -63,34 +63,68 @@ function AppContent() {
   const [isAdvisorModalOpen, setIsAdvisorModalOpen] = useState(false);
   const [currency, setCurrency] = useState<CurrencyConfig>(CURRENCIES[0]);
 
-  // Add new property with confetti celebration
-  const handleAddProperty = (newProp: CommercialProperty) => {
+  // Callbacks memoized for zero-lag interactions
+  const handleAddProperty = useCallback((newProp: CommercialProperty) => {
     addProperty(newProp);
     setActiveTab('calculator');
 
-    // Confetti celebration on asset onboarded
     confetti({
       particleCount: 80,
       spread: 70,
       origin: { y: 0.6 },
       colors: ['#f59e0b', '#10b981', '#ffffff', '#3b82f6'],
     });
-  };
+  }, [addProperty]);
 
-  // Welcome Screen Entrance Action (Demo / Quick Access)
-  const handleEnterFromWelcome = (
+  const handleEnterFromWelcome = useCallback((
     targetTab: 'portfolio' | 'calculator' | 'sensitivity' | 'comparator' = 'portfolio'
   ) => {
     setShowWelcomeScreen(false);
     setActiveTab(targetTab);
-  };
+  }, []);
 
-  // Successful Login / Registration
-  const handleSuccessAuth = (authenticatedUser: UserSession) => {
+  const handleSuccessAuth = useCallback((authenticatedUser: UserSession) => {
     login(authenticatedUser);
     setShowWelcomeScreen(false);
     setActiveTab('portfolio');
-  };
+  }, [login]);
+
+  const handleSelectPropertyForAnalysis = useCallback((prop: CommercialProperty) => {
+    setSelectedProperty(prop);
+    setActiveTab('calculator');
+  }, [setSelectedProperty]);
+
+  const handleOpenDetailModal = useCallback((prop: CommercialProperty) => {
+    setDetailModalProperty(prop);
+  }, []);
+
+  const handleSelectProperty = useCallback((prop: CommercialProperty) => {
+    setSelectedProperty(prop);
+  }, [setSelectedProperty]);
+
+  const handleOpenAddModal = useCallback(() => {
+    setIsAddModalOpen(true);
+  }, []);
+
+  const handleOpenExecutiveReport = useCallback(() => {
+    setIsExecutiveReportOpen(true);
+  }, []);
+
+  const handleOpenAdvisorModal = useCallback(() => {
+    setIsAdvisorModalOpen(true);
+  }, []);
+
+  const handleOpenAuth = useCallback(() => {
+    setIsAuthModalOpen(true);
+  }, []);
+
+  const handleOpenWorkflowTour = useCallback(() => {
+    setIsWorkflowTourOpen(true);
+  }, []);
+
+  const handleOpenWelcome = useCallback(() => {
+    setShowWelcomeScreen(true);
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#050505] text-[#E5E5E5] font-sans selection:bg-[#C5A059]/30 selection:text-[#C5A059] relative">
@@ -101,8 +135,8 @@ function AppContent() {
           onSelectPropertyForAnalysis={(prop) => {
             setSelectedProperty(prop);
           }}
-          onOpenAuth={() => setIsAuthModalOpen(true)}
-          onOpenWorkflowTour={() => setIsWorkflowTourOpen(true)}
+          onOpenAuth={handleOpenAuth}
+          onOpenWorkflowTour={handleOpenWorkflowTour}
         />
       ) : (
         <div className="flex flex-col min-h-screen">
@@ -110,12 +144,12 @@ function AppContent() {
           <Navbar
             activeTab={activeTab}
             setActiveTab={setActiveTab}
-            onOpenWelcome={() => setShowWelcomeScreen(true)}
-            onOpenAddModal={() => setIsAddModalOpen(true)}
-            onOpenExecutiveReport={() => setIsExecutiveReportOpen(true)}
-            onOpenAdvisorModal={() => setIsAdvisorModalOpen(true)}
-            onOpenAuth={() => setIsAuthModalOpen(true)}
-            onOpenWorkflowTour={() => setIsWorkflowTourOpen(true)}
+            onOpenWelcome={handleOpenWelcome}
+            onOpenAddModal={handleOpenAddModal}
+            onOpenExecutiveReport={handleOpenExecutiveReport}
+            onOpenAdvisorModal={handleOpenAdvisorModal}
+            onOpenAuth={handleOpenAuth}
+            onOpenWorkflowTour={handleOpenWorkflowTour}
             user={user}
             onSignOut={logout}
             currentCurrency={currency}
@@ -140,7 +174,7 @@ function AppContent() {
 
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <button
-                    onClick={() => setIsWorkflowTourOpen(true)}
+                    onClick={handleOpenWorkflowTour}
                     className="px-3 py-1 rounded-lg border border-gold/40 hover:border-gold text-gold text-[11px] font-bold uppercase tracking-wider hover:bg-gold/10 transition-all cursor-pointer flex items-center gap-1"
                   >
                     <Compass className="w-3 h-3" />
@@ -148,7 +182,7 @@ function AppContent() {
                   </button>
 
                   <button
-                    onClick={() => setIsAuthModalOpen(true)}
+                    onClick={handleOpenAuth}
                     className="px-3.5 py-1 rounded-lg bg-gold hover:bg-white text-black text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1 shadow-sm"
                   >
                     <KeyRound className="w-3 h-3" />
@@ -167,48 +201,42 @@ function AppContent() {
             </div>
           )}
 
-          {/* Dynamic Content Views */}
+          {/* Dynamic Content Views with Instant Zero-Lag Keep-Alive Switch */}
           <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-            {activeTab === 'portfolio' && (
+            <div className={activeTab === 'portfolio' ? 'block' : 'hidden'} aria-hidden={activeTab !== 'portfolio'}>
               <PortfolioView
                 properties={properties}
-                onSelectPropertyForAnalysis={(prop) => {
-                  setSelectedProperty(prop);
-                  setActiveTab('calculator');
-                }}
-                onOpenDetailModal={(prop) => setDetailModalProperty(prop)}
+                onSelectPropertyForAnalysis={handleSelectPropertyForAnalysis}
+                onOpenDetailModal={handleOpenDetailModal}
                 onDeleteProperty={deleteProperty}
-                onOpenAddModal={() => setIsAddModalOpen(true)}
+                onOpenAddModal={handleOpenAddModal}
               />
-            )}
+            </div>
 
-            {activeTab === 'calculator' && (
+            <div className={activeTab === 'calculator' ? 'block' : 'hidden'} aria-hidden={activeTab !== 'calculator'}>
               <FinancialCalculator
                 properties={properties}
                 selectedProperty={selectedProperty}
                 onUpdateProperty={updateProperty}
-                onSelectProperty={(prop) => setSelectedProperty(prop)}
-                onOpenExecutiveReport={() => setIsExecutiveReportOpen(true)}
+                onSelectProperty={handleSelectProperty}
+                onOpenExecutiveReport={handleOpenExecutiveReport}
               />
-            )}
+            </div>
 
-            {activeTab === 'sensitivity' && (
+            <div className={activeTab === 'sensitivity' ? 'block' : 'hidden'} aria-hidden={activeTab !== 'sensitivity'}>
               <SensitivityMatrix
                 properties={properties}
                 selectedProperty={selectedProperty}
-                onSelectProperty={(prop) => setSelectedProperty(prop)}
+                onSelectProperty={handleSelectProperty}
               />
-            )}
+            </div>
 
-            {activeTab === 'comparator' && (
+            <div className={activeTab === 'comparator' ? 'block' : 'hidden'} aria-hidden={activeTab !== 'comparator'}>
               <AssetComparator
                 properties={properties}
-                onSelectPropertyForAnalysis={(prop) => {
-                  setSelectedProperty(prop);
-                  setActiveTab('calculator');
-                }}
+                onSelectPropertyForAnalysis={handleSelectPropertyForAnalysis}
               />
-            )}
+            </div>
           </main>
         </div>
       )}

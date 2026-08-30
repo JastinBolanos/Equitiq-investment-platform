@@ -1,6 +1,7 @@
 import { CommercialProperty } from '../types';
+import { PROPERTY_IMAGES_MAP } from './propertyImages';
 
-export const INITIAL_PROPERTIES: CommercialProperty[] = [
+const RAW_PROPERTIES: CommercialProperty[] = [
   {
     id: 'prop-001',
     name: 'Torre Corporativa Reforma Prime',
@@ -283,10 +284,10 @@ export const INITIAL_PROPERTIES: CommercialProperty[] = [
     country: 'Colombia',
     address: 'Parque Tecnológico Calle 26 # 69D-91',
     yearBuilt: 2023,
-    imageUrl: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1200&auto=format&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=1200&auto=format&fit=crop',
     additionalImages: [
-      'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=1000&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1000&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=1000&auto=format&fit=crop',
     ],
     description: 'Complejo especializado con cuartos limpios ISO Clase 5 a 8, redes de gases médicos, subestación eléctrica redundante de 4 MVA y laboratorios de investigación biotecnológica.',
@@ -1197,10 +1198,10 @@ export const INITIAL_PROPERTIES: CommercialProperty[] = [
     address: 'Carretera Estatal 100 Km 22, Corredor Aeroespacial Colón',
     yearBuilt: 2022,
     yearRenovated: 2024,
-    imageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1200&auto=format&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1200&auto=format&fit=crop',
     additionalImages: [
-      'https://images.unsplash.com/photo-1553413077-190dd305871c?q=80&w=1000&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1000&auto=format&fit=crop',
     ],
     description: 'Parque industrial manufacturero avanzado de 60,000 m² con hangares de prueba de turbinas, grúas viajeras de 25 toneladas, piso epóxico antiestático y acceso directo a pista de carreteo aeroportuario.',
     
@@ -1364,9 +1365,9 @@ export const INITIAL_PROPERTIES: CommercialProperty[] = [
     address: 'Centro Histórico, Calle de la Inquisición # 3-45',
     yearBuilt: 2020,
     yearRenovated: 2024,
-    imageUrl: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=1200&auto=format&fit=crop',
     additionalImages: [
-      'https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1000&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?q=80&w=1000&auto=format&fit=crop',
     ],
     description: 'Joya arquitectónica restaurada de valor patrimonial protegida por la UNESCO, combinando un hotel boutique de 65 suites de ultra lujo, galería de joyerías finas y 4 restaurantes de autor con estrella internacional.',
@@ -1535,25 +1536,25 @@ export const INITIAL_PROPERTIES: CommercialProperty[] = [
   },
   {
     id: 'prop-019',
-    name: 'Metropolitan Logistics & Cold Chain Park',
-    code: 'MLC-P19',
-    category: 'Logístico',
-    city: 'Lima',
-    country: 'Perú',
-    address: 'Autopista Panamericana Sur Km 38, Lurín Industrial',
+    name: 'Burj Crown Financial & Skyline Tower',
+    code: 'BCF-D19',
+    category: 'Oficinas',
+    city: 'Dubái',
+    country: 'Emiratos Árabes Unidos',
+    address: 'Sheikh Mohammed bin Rashid Blvd, Downtown Dubai',
     yearBuilt: 2023,
-    imageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1200&auto=format&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?q=80&w=1200&auto=format&fit=crop',
     additionalImages: [
-      'https://images.unsplash.com/photo-1553413077-190dd305871c?q=80&w=1000&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1518684079-3c830dcef090?q=80&w=1000&auto=format&fit=crop',
     ],
-    description: 'Mega complejo logístico multimodal con muelles de carga automatizados, cámaras de congelación profunda a -25°C para exportación agroindustrial y certificación EDGE de eficiencia energética.',
+    description: 'Icónico rascacielos corporativo y complejo financiero de clase Prime en Downtown Dubai con vistas panorámicas al Burj Khalifa, sedes de banca privada internacional, salas de conferencias ejecutivas y certificación LEED Platinum.',
     
     totalAreaM2: 52000,
     grossLeasableAreaM2: 43500,
-    parkingSpaces: 280,
+    parkingSpaces: 420,
     occupancyRate: 98.8,
-    floorsCount: 2,
+    floorsCount: 48,
     classRating: 'Prime',
 
     purchasePrice: 34200000,
@@ -1589,8 +1590,8 @@ export const INITIAL_PROPERTIES: CommercialProperty[] = [
     tenants: [
       {
         id: 't-1901',
-        name: 'Ransa Cadena de Frío',
-        industry: 'Logística de Alimentos & Frío',
+        name: 'Emirates NBD Private Wealth',
+        industry: 'Banca Privada & Gestión Patrimonial',
         areaOccupiedM2: 21000,
         monthlyRentPerM2: 8.2,
         leaseStartYear: 2023,
@@ -1600,8 +1601,8 @@ export const INITIAL_PROPERTIES: CommercialProperty[] = [
       },
       {
         id: 't-1902',
-        name: 'Falabella E-Commerce Hub',
-        industry: 'Retail & Logística Digital',
+        name: 'DIFC Sovereign Fund Advisory',
+        industry: 'Finanzas & Fondos Soberanos',
         areaOccupiedM2: 14500,
         monthlyRentPerM2: 7.8,
         leaseStartYear: 2023,
@@ -1611,8 +1612,8 @@ export const INITIAL_PROPERTIES: CommercialProperty[] = [
       },
       {
         id: 't-1903',
-        name: 'Maersk Integrated Logistics',
-        industry: 'Transporte Marítimo & Carga',
+        name: 'Standard Chartered Middle East HQ',
+        industry: 'Banca Corporativa & Mercados',
         areaOccupiedM2: 8000,
         monthlyRentPerM2: 7.5,
         leaseStartYear: 2023,
@@ -1721,9 +1722,9 @@ export const INITIAL_PROPERTIES: CommercialProperty[] = [
     country: 'Chile',
     address: 'Av. Vitacura 5250, Sector Clínico Oriente',
     yearBuilt: 2022,
-    imageUrl: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?q=80&w=1200&auto=format&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=1200&auto=format&fit=crop',
     additionalImages: [
-      'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?q=80&w=1000&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=1000&auto=format&fit=crop',
     ],
     description: 'Edificio de alta especialidad médica y oncología diagnóstica con blindaje radiológico para aceleradores lineales, quirófanos inteligentes de última generación y consultorios premium.',
@@ -2078,10 +2079,10 @@ export const INITIAL_PROPERTIES: CommercialProperty[] = [
     address: 'Av. Alvear 1891, Recoleta',
     yearBuilt: 2019,
     yearRenovated: 2024,
-    imageUrl: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1200&auto=format&fit=crop',
     additionalImages: [
       'https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=1000&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1000&auto=format&fit=crop',
     ],
     description: 'Complejo hotelero y de residencias de ultralujo en el corazón de Recoleta, operado bajo contrato de arrendamiento triple neto (NNN) dolarizado a largo plazo con spa de autor y restaurante Michelin.',
     
@@ -2433,9 +2434,9 @@ export const INITIAL_PROPERTIES: CommercialProperty[] = [
     address: 'Pedregal 24, Molino del Rey, Lomas de Chapultepec',
     yearBuilt: 2020,
     yearRenovated: 2024,
-    imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200&auto=format&fit=crop',
     additionalImages: [
-      'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1000&auto=format&fit=crop',
     ],
     description: 'Icono arquitectónico en Lomas de Chapultepec, considerado el edificio corporativo más exclusivo de México para family offices, banca de inversión y fondos de capital privado.',
@@ -2611,10 +2612,10 @@ export const INITIAL_PROPERTIES: CommercialProperty[] = [
     address: 'Av. José Vasconcelos 402, San Pedro Garza García',
     yearBuilt: 2021,
     yearRenovated: 2024,
-    imageUrl: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?q=80&w=1200&auto=format&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?q=80&w=1200&auto=format&fit=crop',
     additionalImages: [
+      'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?q=80&w=1000&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1567449303078-57ad995bd302?q=80&w=1000&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?q=80&w=1000&auto=format&fit=crop',
     ],
     description: 'Centro comercial boutique de lujo en el municipio con mayor PIB per cápita de América Latina, con anclas globales de alta costura, joyería fina y conceptos gastronómicos insignia.',
     
@@ -2780,3 +2781,16 @@ export const INITIAL_PROPERTIES: CommercialProperty[] = [
     ],
   },
 ];
+
+export const INITIAL_PROPERTIES: CommercialProperty[] = RAW_PROPERTIES.map((prop) => {
+  const images = PROPERTY_IMAGES_MAP[prop.id];
+  if (images) {
+    return {
+      ...prop,
+      imageUrl: images.imageUrl,
+      additionalImages: images.additionalImages,
+    };
+  }
+  return prop;
+});
+

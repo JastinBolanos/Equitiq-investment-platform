@@ -243,46 +243,51 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
                 </button>
               </div>
 
-              {/* Block 2: Ver en Demostración como es el trabajo aquí si no eres cliente */}
-              <div className="mt-2 p-5 rounded-2xl bg-gradient-to-r from-white/[0.04] to-[#C5A059]/[0.05] border border-gold/30 relative overflow-hidden group hover:border-gold/60 transition-all">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 rounded bg-gold/20 text-gold border border-gold/30 text-[9px] uppercase font-bold tracking-widest font-mono-num">
-                        MODO DEMOSTRACIÓN • ACCESO INVITADO
-                      </span>
-                      <span className="text-[10px] text-neutral-400 font-sans hidden sm:inline">
-                        (Sin necesidad de ser cliente registrado)
-                      </span>
-                    </div>
-                    <h3 className="text-sm sm:text-base font-bold text-white font-sans flex items-center gap-2">
-                      <span>{t.welcomeDemoSectionTitle}</span>
-                    </h3>
-                    <p className="text-xs text-neutral-400 max-w-lg leading-relaxed">
-                      {t.welcomeDemoSectionSubtitle}
-                    </p>
+              {/* Block 2: Modern Institutional Guest Demo Card */}
+              <div className="mt-3 p-5 sm:p-6 rounded-2xl bg-[#0C0C0C]/90 border border-gold/30 hover:border-gold/60 backdrop-blur-md shadow-2xl space-y-4 transition-all group">
+                {/* Header with Badges */}
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
+                  <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-gold/10 border border-gold/30 text-gold text-[10px] font-bold uppercase tracking-wider font-mono-num">
+                    <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
+                    <span>MODO DEMOSTRACIÓN • ACCESO INVITADO</span>
                   </div>
+                  <span className="text-[11px] text-neutral-400 font-sans">
+                    Sin necesidad de registro previo
+                  </span>
+                </div>
 
-                  <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
-                    <button
-                      id="welcome-tour-modal-btn"
-                      onClick={onOpenWorkflowTour}
-                      className="px-4 py-2.5 rounded-xl border border-white/20 hover:border-gold hover:text-gold text-xs font-sans font-semibold text-neutral-300 transition-all flex items-center gap-1.5 cursor-pointer"
-                    >
-                      <Compass className="w-3.5 h-3.5 text-gold" />
-                      <span>{t.welcomeWorkflowTourButton}</span>
-                    </button>
+                {/* Content info */}
+                <div className="space-y-1.5 text-left">
+                  <h3 className="text-base font-bold text-white font-sans flex items-center gap-2">
+                    <span>{t.welcomeDemoSectionTitle}</span>
+                  </h3>
+                  <p className="text-xs text-neutral-300/80 leading-relaxed max-w-xl">
+                    {t.welcomeDemoSectionSubtitle}
+                  </p>
+                </div>
 
-                    <button
-                      id="welcome-enter-demo-btn"
-                      onClick={() => onEnter('portfolio')}
-                      className="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-gold hover:text-black border border-gold/40 text-xs font-sans font-bold uppercase tracking-wider text-white transition-all flex items-center gap-1.5 cursor-pointer shadow-md"
-                    >
-                      <Play className="w-3 h-3 fill-current" />
-                      <span>{t.welcomeDemoButton}</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
+                {/* Clean responsive action buttons */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  <button
+                    id="welcome-tour-modal-btn"
+                    type="button"
+                    onClick={onOpenWorkflowTour}
+                    className="py-3 px-4 rounded-xl border border-white/20 hover:border-gold hover:bg-gold/5 text-xs font-semibold text-neutral-200 hover:text-gold transition-all flex items-center justify-center gap-2 cursor-pointer truncate"
+                  >
+                    <Compass className="w-4 h-4 text-gold flex-shrink-0" />
+                    <span className="truncate">{t.welcomeWorkflowTourButton}</span>
+                  </button>
+
+                  <button
+                    id="welcome-enter-demo-btn"
+                    type="button"
+                    onClick={() => onEnter('portfolio')}
+                    className="py-3 px-4 rounded-xl bg-gold hover:bg-white text-black text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-gold/20 hover:scale-[1.01] active:scale-[0.99] truncate"
+                  >
+                    <Play className="w-3.5 h-3.5 fill-current flex-shrink-0" />
+                    <span className="truncate">{t.welcomeDemoButton}</span>
+                    <ArrowRight className="w-3.5 h-3.5 flex-shrink-0" />
+                  </button>
                 </div>
               </div>
             </motion.div>

@@ -14,6 +14,8 @@ export class LocalStorageService {
    */
   static loadProperties(): CommercialProperty[] {
     try {
+      const initialMap = new Map(INITIAL_PROPERTIES.map((p) => [p.id, p]));
+
       const savedV3 =
         localStorage.getItem(STORAGE_KEYS.PROPERTIES_V3) ||
         localStorage.getItem(STORAGE_KEYS.PROPERTIES_AURA_V3);
@@ -21,7 +23,26 @@ export class LocalStorageService {
       if (savedV3) {
         const parsed: CommercialProperty[] = JSON.parse(savedV3);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed;
+          // Merge initial properties with updated institutional data & matching images while preserving custom user assets
+          return parsed.map((p) => {
+            const defaultProp = initialMap.get(p.id);
+            if (defaultProp) {
+              return {
+                ...p,
+                name: defaultProp.name,
+                category: defaultProp.category,
+                city: defaultProp.city,
+                country: defaultProp.country,
+                address: defaultProp.address,
+                description: defaultProp.description,
+                tenants: defaultProp.tenants,
+                imageUrl: defaultProp.imageUrl,
+                additionalImages: defaultProp.additionalImages,
+                floorsCount: defaultProp.floorsCount,
+              };
+            }
+            return p;
+          });
         }
       }
 
@@ -31,7 +52,6 @@ export class LocalStorageService {
 
       if (legacySaved) {
         const parsed: CommercialProperty[] = JSON.parse(legacySaved);
-        const initialMap = new Map(INITIAL_PROPERTIES.map((p) => [p.id, p]));
         const customUserProps = parsed.filter((p) => !initialMap.has(p.id));
         return [...INITIAL_PROPERTIES, ...customUserProps];
       }

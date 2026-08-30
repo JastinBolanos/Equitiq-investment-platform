@@ -16,7 +16,9 @@ import {
   Play,
   RotateCcw,
   CheckCircle2,
-  ShieldAlert
+  ShieldAlert,
+  Clock,
+  FileText
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useLanguage } from '../context/LanguageContext';
@@ -29,6 +31,16 @@ export interface UserSession {
   role: string;
   avatarUrl?: string;
   isDemo?: boolean;
+}
+
+interface PendingApplication {
+  id: string;
+  name: string;
+  email: string;
+  organization: string;
+  role: string;
+  ticket: string;
+  submittedAt: string;
 }
 
 interface AuthModalProps {
@@ -77,7 +89,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [registerRole, setRegisterRole] = useState('FundManager');
   const [registerTicket, setRegisterTicket] = useState('$10M - $50M');
   const [registerPassword, setRegisterPassword] = useState('');
-  const [registerSuccessMessage, setRegisterSuccessMessage] = useState(false);
+  const [pendingApplication, setPendingApplication] = useState<PendingApplication | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen) return null;
@@ -91,7 +103,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setTimeout(() => {
       setIsSubmitting(false);
 
-      // Unless explicitly using the master admin bypass token, any standard login attempt returns an institutional access rejection
+      // Standard login attempt returns an institutional access rejection
       const nextAttempts = loginError.attempts + 1;
       setLoginError({
         show: true,
@@ -158,29 +170,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
-      setRegisterSuccessMessage(true);
-
-      setTimeout(() => {
-        const user: UserSession = {
-          id: 'usr-new-' + Date.now(),
-          name: registerName,
-          email: registerEmail,
-          organization: registerOrg,
-          role: registerRole === 'FundManager' ? 'Fund Manager' : registerRole,
-          isDemo: false,
-        };
-
-        confetti({
-          particleCount: 90,
-          spread: 80,
-          origin: { y: 0.5 },
-          colors: ['#C5A059', '#10b981', '#ffffff'],
-        });
-
-        onSuccessAuth(user);
-        onClose();
-      }, 1400);
-    }, 800);
+      const app: PendingApplication = {
+        id: `REQ-${new Date().getFullYear()}-${Math.floor(100000 + Math.random() * 900000)}`,
+        name: registerName,
+        email: registerEmail,
+        organization: registerOrg,
+        role: registerRole === 'FundManager' ? 'Fund Manager' : registerRole,
+        ticket: registerTicket,
+        submittedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      };
+      setPendingApplication(app);
+      // Strictly remain in pending / on hold status. NEVER claim to be attended / approved.
+    }, 700);
   };
 
   return (
@@ -496,150 +497,271 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
               </div>
             </div>
+          ) : pendingApplication ? (
+            /* Dedicated Institutional "SOLICITUD EN ESPERA" Confirmation Screen */
+            <div className="space-y-4 animate-in fade-in zoom-in-95 duration-300">
+              
+              {/* Header Box with Amber / Gold Pending Warning & Status Badge */}
+              <div className="p-4 rounded-xl bg-amber-950/30 border border-amber-500/40 text-left space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[10px] font-bold uppercase tracking-wider font-mono-num">
+                    <Clock className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+                    <span>{t.authPendingStatusBadge}</span>
+                  </div>
+                  <span className="text-[10px] text-neutral-400 font-mono-num">
+                    {pendingApplication.submittedAt}
+                  </span>
+                </div>
+
+                <div>
+                  <h3 className="text-base font-serif font-bold text-white tracking-wide">
+                    {t.authPendingTitle}
+                  </h3>
+                  <p className="text-xs text-neutral-300 mt-1 leading-relaxed">
+                    {t.authPendingSubtitle}
+                  </p>
+                </div>
+              </div>
+
+              {/* Application Reference Receipt Card */}
+              <div className="p-4 rounded-xl bg-black/60 border border-white/15 space-y-3">
+                <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                  <span className="text-[10px] uppercase tracking-wider text-neutral-400 font-sans">
+                    {t.authPendingFolio}
+                  </span>
+                  <span className="text-xs font-mono font-bold text-gold">
+                    {pendingApplication.id}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 text-xs">
+                  <div>
+                    <span className="text-[9px] uppercase tracking-wider text-neutral-500 block font-sans">
+                      Inversionista
+                    </span>
+                    <span className="font-semibold text-white truncate block">
+                      {pendingApplication.name}
+                    </span>
+                  </div>
+
+                  <div>
+                    <span className="text-[9px] uppercase tracking-wider text-neutral-500 block font-sans">
+                      Entidad / Fondo
+                    </span>
+                    <span className="font-semibold text-white truncate block">
+                      {pendingApplication.organization}
+                    </span>
+                  </div>
+
+                  <div>
+                    <span className="text-[9px] uppercase tracking-wider text-neutral-500 block font-sans">
+                      Correo Corporativo
+                    </span>
+                    <span className="text-neutral-300 truncate block text-[11px]">
+                      {pendingApplication.email}
+                    </span>
+                  </div>
+
+                  <div>
+                    <span className="text-[9px] uppercase tracking-wider text-neutral-500 block font-sans">
+                      {t.authPendingTicket}
+                    </span>
+                    <span className="font-semibold text-gold truncate block text-[11px]">
+                      {pendingApplication.ticket}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-white/10 flex items-center justify-between text-[11px]">
+                  <span className="text-neutral-400">Estado de Trámite:</span>
+                  <span className="inline-flex items-center gap-1 text-amber-300 font-semibold">
+                    <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+                    En Espera de Dictamen
+                  </span>
+                </div>
+              </div>
+
+              {/* Explanatory Notice: Received but NEVER attended yet */}
+              <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 flex items-start gap-2.5 text-left">
+                <ShieldAlert className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                <p className="text-[11px] text-neutral-300 leading-relaxed">
+                  {t.authPendingNotice}
+                </p>
+              </div>
+
+              {/* Action Buttons while on hold */}
+              <div className="space-y-2 pt-1">
+                {onEnterDemo && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      onEnterDemo();
+                    }}
+                    className="w-full py-3 px-4 rounded-xl bg-gold hover:bg-white text-black font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-gold/20 hover:scale-[1.01]"
+                  >
+                    <Play className="w-3.5 h-3.5 fill-current" />
+                    <span>{t.authPendingExploreDemo}</span>
+                  </button>
+                )}
+
+                <div className="grid grid-cols-2 gap-2">
+                  {onOpenWorkflowTour && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onClose();
+                        onOpenWorkflowTour();
+                      }}
+                      className="py-2.5 px-3 rounded-lg border border-white/20 hover:border-gold text-[10px] font-bold uppercase text-neutral-300 hover:text-gold transition-all flex items-center justify-center gap-1.5 cursor-pointer truncate"
+                    >
+                      <Compass className="w-3.5 h-3.5 text-gold flex-shrink-0" />
+                      <span className="truncate">Ver Tour del Flujo</span>
+                    </button>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={() => setPendingApplication(null)}
+                    className="py-2.5 px-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[10px] font-semibold text-neutral-300 hover:text-white transition-all flex items-center justify-center gap-1.5 cursor-pointer truncate"
+                  >
+                    <RotateCcw className="w-3 h-3 flex-shrink-0" />
+                    <span className="truncate">{t.authPendingNewRequest}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
           ) : (
             /* Register / Institutional Onboarding Form */
             <form onSubmit={handleRegisterSubmit} className="space-y-3.5">
-              {registerSuccessMessage ? (
-                <div className="p-5 rounded-xl bg-emerald-950/40 border border-emerald-500/50 text-center space-y-2 animate-in zoom-in-95 duration-300">
-                  <div className="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 mx-auto flex items-center justify-center">
-                    <CheckCircle2 className="w-6 h-6" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div>
+                  <label className="block text-[11px] font-medium uppercase tracking-wider text-neutral-300 mb-1 font-sans">
+                    {t.authFullNameLabel}
+                  </label>
+                  <div className="relative">
+                    <User className="w-3.5 h-3.5 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      required
+                      value={registerName}
+                      onChange={(e) => setRegisterName(e.target.value)}
+                      className="w-full bg-[#141414] border border-white/15 rounded-xl pl-9 pr-3 py-2.5 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-gold"
+                      placeholder="Ej. Santiago Larraín"
+                    />
                   </div>
-                  <h4 className="text-sm font-bold text-white uppercase tracking-wider">
-                    Solicitud Institucional Recibida
-                  </h4>
-                  <p className="text-xs text-neutral-300">
-                    Acreditando cuenta de inversionista y habilitando acceso al portal institucional...
-                  </p>
                 </div>
-              ) : (
-                <>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <div>
-                      <label className="block text-[11px] font-medium uppercase tracking-wider text-neutral-300 mb-1 font-sans">
-                        {t.authFullNameLabel}
-                      </label>
-                      <div className="relative">
-                        <User className="w-3.5 h-3.5 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2" />
-                        <input
-                          type="text"
-                          required
-                          value={registerName}
-                          onChange={(e) => setRegisterName(e.target.value)}
-                          className="w-full bg-[#141414] border border-white/15 rounded-xl pl-9 pr-3 py-2.5 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-gold"
-                          placeholder="Ej. Santiago Larraín"
-                        />
-                      </div>
-                    </div>
 
-                    <div>
-                      <label className="block text-[11px] font-medium uppercase tracking-wider text-neutral-300 mb-1 font-sans">
-                        {t.authOrganizationLabel}
-                      </label>
-                      <div className="relative">
-                        <Building2 className="w-3.5 h-3.5 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2" />
-                        <input
-                          type="text"
-                          required
-                          value={registerOrg}
-                          onChange={(e) => setRegisterOrg(e.target.value)}
-                          className="w-full bg-[#141414] border border-white/15 rounded-xl pl-9 pr-3 py-2.5 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-gold"
-                          placeholder="Ej. Santander Real Estate Capital"
-                        />
-                      </div>
-                    </div>
+                <div>
+                  <label className="block text-[11px] font-medium uppercase tracking-wider text-neutral-300 mb-1 font-sans">
+                    {t.authOrganizationLabel}
+                  </label>
+                  <div className="relative">
+                    <Building2 className="w-3.5 h-3.5 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      required
+                      value={registerOrg}
+                      onChange={(e) => setRegisterOrg(e.target.value)}
+                      className="w-full bg-[#141414] border border-white/15 rounded-xl pl-9 pr-3 py-2.5 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-gold"
+                      placeholder="Ej. Santander Real Estate Capital"
+                    />
                   </div>
+                </div>
+              </div>
 
-                  <div>
-                    <label className="block text-[11px] font-medium uppercase tracking-wider text-neutral-300 mb-1 font-sans">
-                      {t.authEmailLabel}
-                    </label>
-                    <div className="relative">
-                      <Mail className="w-3.5 h-3.5 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2" />
-                      <input
-                        type="email"
-                        required
-                        value={registerEmail}
-                        onChange={(e) => setRegisterEmail(e.target.value)}
-                        className="w-full bg-[#141414] border border-white/15 rounded-xl pl-9 pr-3 py-2.5 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-gold"
-                        placeholder="contacto@entidad.com"
-                      />
-                    </div>
-                  </div>
+              <div>
+                <label className="block text-[11px] font-medium uppercase tracking-wider text-neutral-300 mb-1 font-sans">
+                  {t.authEmailLabel}
+                </label>
+                <div className="relative">
+                  <Mail className="w-3.5 h-3.5 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="email"
+                    required
+                    value={registerEmail}
+                    onChange={(e) => setRegisterEmail(e.target.value)}
+                    className="w-full bg-[#141414] border border-white/15 rounded-xl pl-9 pr-3 py-2.5 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-gold"
+                    placeholder="contacto@entidad.com"
+                  />
+                </div>
+              </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <div>
-                      <label className="block text-[11px] font-medium uppercase tracking-wider text-neutral-300 mb-1 font-sans">
-                        {t.authRoleLabel}
-                      </label>
-                      <select
-                        value={registerRole}
-                        onChange={(e) => setRegisterRole(e.target.value)}
-                        className="w-full bg-[#141414] border border-white/15 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-gold"
-                      >
-                        <option value="FundManager">{t.authRoleFundManager}</option>
-                        <option value="FamilyOffice">{t.authRoleFamilyOffice}</option>
-                        <option value="Underwriter">{t.authRoleUnderwriter}</option>
-                        <option value="Institutional">{t.authRoleInstitutional}</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-[11px] font-medium uppercase tracking-wider text-neutral-300 mb-1 font-sans">
-                        {t.authTicketSizeLabel}
-                      </label>
-                      <select
-                        value={registerTicket}
-                        onChange={(e) => setRegisterTicket(e.target.value)}
-                        className="w-full bg-[#141414] border border-white/15 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-gold"
-                      >
-                        <option value="$1M - $10M">$1M - $10M USD</option>
-                        <option value="$10M - $50M">$10M - $50M USD</option>
-                        <option value="$50M - $200M">$50M - $200M USD</option>
-                        <option value="$200M+">$200M+ USD (Megafunds)</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-medium uppercase tracking-wider text-neutral-300 mb-1 font-sans">
-                      {t.authPasswordLabel}
-                    </label>
-                    <div className="relative">
-                      <Lock className="w-3.5 h-3.5 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2" />
-                      <input
-                        type="password"
-                        required
-                        value={registerPassword}
-                        onChange={(e) => setRegisterPassword(e.target.value)}
-                        className="w-full bg-[#141414] border border-white/15 rounded-xl pl-9 pr-3 py-2.5 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-gold"
-                        placeholder="Mínimo 8 caracteres corporativos"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="p-3 rounded-xl bg-gold/5 border border-gold/20 flex items-start gap-2.5 mt-2">
-                    <CheckCircle2 className="w-4 h-4 text-gold flex-shrink-0 mt-0.5" />
-                    <p className="text-[10px] text-neutral-300 leading-normal">
-                      {t.authCreateAccountBadge} — Acreditación institucional con acceso a salas de datos y modelos financieros.
-                    </p>
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full mt-2 bg-gold hover:bg-white text-black font-bold uppercase tracking-widest text-xs py-3.5 rounded-xl shadow-lg shadow-gold/20 flex items-center justify-center gap-2 transition-all cursor-pointer disabled:opacity-50"
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div>
+                  <label className="block text-[11px] font-medium uppercase tracking-wider text-neutral-300 mb-1 font-sans">
+                    {t.authRoleLabel}
+                  </label>
+                  <select
+                    value={registerRole}
+                    onChange={(e) => setRegisterRole(e.target.value)}
+                    className="w-full bg-[#141414] border border-white/15 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-gold"
                   >
-                    {isSubmitting ? (
-                      <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                    ) : (
-                      <>
-                        <span>{t.authSubmitRegister}</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </>
-                    )}
-                  </button>
-                </>
-              )}
+                    <option value="FundManager">{t.authRoleFundManager}</option>
+                    <option value="FamilyOffice">{t.authRoleFamilyOffice}</option>
+                    <option value="Underwriter">{t.authRoleUnderwriter}</option>
+                    <option value="Institutional">{t.authRoleInstitutional}</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-medium uppercase tracking-wider text-neutral-300 mb-1 font-sans">
+                    {t.authTicketSizeLabel}
+                  </label>
+                  <select
+                    value={registerTicket}
+                    onChange={(e) => setRegisterTicket(e.target.value)}
+                    className="w-full bg-[#141414] border border-white/15 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-gold"
+                  >
+                    <option value="$1M - $10M">$1M - $10M USD</option>
+                    <option value="$10M - $50M">$10M - $50M USD</option>
+                    <option value="$50M - $200M">$50M - $200M USD</option>
+                    <option value="$200M+">$200M+ USD (Megafunds)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-medium uppercase tracking-wider text-neutral-300 mb-1 font-sans">
+                  {t.authPasswordLabel}
+                </label>
+                <div className="relative">
+                  <Lock className="w-3.5 h-3.5 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="password"
+                    required
+                    value={registerPassword}
+                    onChange={(e) => setRegisterPassword(e.target.value)}
+                    className="w-full bg-[#141414] border border-white/15 rounded-xl pl-9 pr-3 py-2.5 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-gold"
+                    placeholder="Mínimo 8 caracteres corporativos"
+                  />
+                </div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-gold/5 border border-gold/20 flex items-start gap-2.5 mt-2">
+                <CheckCircle2 className="w-4 h-4 text-gold flex-shrink-0 mt-0.5" />
+                <p className="text-[10px] text-neutral-300 leading-normal">
+                  {t.authCreateAccountBadge} — Recepción formal de expediente institucional con auditoría KYC previa a la habilitación.
+                </p>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full mt-2 bg-gold hover:bg-white text-black font-bold uppercase tracking-widest text-xs py-3.5 rounded-xl shadow-lg shadow-gold/20 flex items-center justify-center gap-2 transition-all cursor-pointer disabled:opacity-50"
+              >
+                {isSubmitting ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                    <span>Radicando Expediente de Admisión...</span>
+                  </div>
+                ) : (
+                  <>
+                    <span>{t.authSubmitRegister}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
             </form>
           )}
 
