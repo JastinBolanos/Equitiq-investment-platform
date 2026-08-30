@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Building2, 
   BarChart3, 
@@ -6,14 +6,17 @@ import {
   GitCompare, 
   FileText, 
   Plus, 
-  Sparkles, 
   Home,
   Bot,
-  User,
   LogOut,
   KeyRound,
   Compass,
-  ChevronDown
+  Menu,
+  X,
+  Globe,
+  ChevronRight,
+  ShieldCheck,
+  Sparkles
 } from 'lucide-react';
 import { CurrencyConfig } from '../types';
 import { useLanguage } from '../context/LanguageContext';
@@ -31,9 +34,9 @@ interface NavbarProps {
   onOpenWorkflowTour: () => void;
   user: UserSession | null;
   onSignOut: () => void;
-  currentCurrency: CurrencyConfig;
-  setCurrency: (c: CurrencyConfig) => void;
-  currencies: CurrencyConfig[];
+  currentCurrency?: CurrencyConfig;
+  setCurrency?: (c: CurrencyConfig) => void;
+  currencies?: CurrencyConfig[];
   selectedPropertyName?: string;
 }
 
@@ -51,237 +54,447 @@ export const Navbar: React.FC<NavbarProps> = ({
   selectedPropertyName,
 }) => {
   const { t } = useLanguage();
-  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const drawerRef = useRef<HTMLDivElement>(null);
+
+  // Close drawer on Escape key or when route changes
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setDrawerOpen(false);
+      }
+    };
+
+    if (drawerOpen) {
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [drawerOpen]);
+
+  const handleTabChange = (tab: 'portfolio' | 'calculator' | 'sensitivity' | 'comparator') => {
+    setActiveTab(tab);
+    setDrawerOpen(false);
+  };
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#050505]/95 backdrop-blur-md border-b border-white/10 no-print font-sans">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20">
-          {/* Logo & Brand with Diamond Emblem */}
-          <div className="flex items-center gap-3.5 cursor-pointer" onClick={onOpenWelcome}>
-            <div className="w-6 h-6 border-2 border-gold rotate-45 flex items-center justify-center flex-shrink-0">
-              <div className="w-1.5 h-1.5 bg-gold" />
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-sans font-bold text-sm sm:text-base tracking-[0.25em] uppercase text-white">
+    <>
+      <header className="sticky top-0 z-40 w-full bg-[#050505]/95 backdrop-blur-xl border-b border-white/10 no-print font-sans select-none">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
+          {/* Main sleek, compact navbar row */}
+          <div className="flex items-center justify-between h-13 sm:h-14 gap-2 sm:gap-4">
+            
+            {/* 1. Left: Brand Logo & Title */}
+            <div 
+              id="nav-brand-logo"
+              className="flex items-center gap-2.5 sm:gap-3 cursor-pointer py-1 group flex-shrink-0"
+              onClick={onOpenWelcome}
+              title={t.navReturnHome}
+            >
+              {/* Emblem Cubito Dorado (Diamond with center cube/diamond) */}
+              <div className="w-6 h-6 border-[1.5px] border-gold rotate-45 flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110 shadow-sm shadow-gold/20 bg-black/40">
+                <div className="w-1.5 h-1.5 bg-gold" />
+              </div>
+              <div className="flex flex-col min-w-0">
+                <span className="font-sans font-bold text-xs sm:text-sm tracking-[0.18em] uppercase text-white group-hover:text-gold transition-colors leading-none">
                   {t.brandName}
                 </span>
+                <span className="hidden 2xl:block text-[7.5px] tracking-[0.18em] text-neutral-400 uppercase font-mono-num leading-tight mt-0.5">
+                  {t.brandTagline}
+                </span>
               </div>
-              <span className="hidden sm:block text-[8px] tracking-[0.25em] text-neutral-500 uppercase font-mono-num">
-                {t.brandTagline}
-              </span>
+            </div>
+
+            {/* 2. Center: Compact, perfectly fitted primary tab box (Desktop / Laptop) */}
+            <nav className="hidden md:flex items-center gap-0.5 p-0.5 rounded-lg border border-white/10 bg-black/60 backdrop-blur-md flex-shrink-0 shadow-inner">
+              <button
+                id="nav-tab-portfolio"
+                onClick={() => handleTabChange('portfolio')}
+                className={`px-2.5 lg:px-3 py-1 rounded-md text-[11px] uppercase tracking-wider font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap leading-none ${
+                  activeTab === 'portfolio'
+                    ? 'bg-gold text-black font-bold shadow-sm shadow-gold/30'
+                    : 'text-neutral-300 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <Building2 className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>{t.navPortfolio}</span>
+              </button>
+
+              <button
+                id="nav-tab-calculator"
+                onClick={() => handleTabChange('calculator')}
+                className={`px-2.5 lg:px-3 py-1 rounded-md text-[11px] uppercase tracking-wider font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap leading-none ${
+                  activeTab === 'calculator'
+                    ? 'bg-gold text-black font-bold shadow-sm shadow-gold/30'
+                    : 'text-neutral-300 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <BarChart3 className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>{t.navCalculator}</span>
+                {selectedPropertyName && (
+                  <span className="px-1 py-0.5 rounded bg-black/30 text-[8.5px] truncate max-w-[65px] lg:max-w-[85px] normal-case font-mono-num border border-white/10 leading-none">
+                    {selectedPropertyName}
+                  </span>
+                )}
+              </button>
+
+              <button
+                id="nav-tab-sensitivity"
+                onClick={() => handleTabChange('sensitivity')}
+                className={`px-2.5 lg:px-3 py-1 rounded-md text-[11px] uppercase tracking-wider font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap leading-none ${
+                  activeTab === 'sensitivity'
+                    ? 'bg-gold text-black font-bold shadow-sm shadow-gold/30'
+                    : 'text-neutral-300 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <Layers className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>{t.navSensitivity}</span>
+              </button>
+
+              <button
+                id="nav-tab-comparator"
+                onClick={() => handleTabChange('comparator')}
+                className={`px-2.5 lg:px-3 py-1 rounded-md text-[11px] uppercase tracking-wider font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap leading-none ${
+                  activeTab === 'comparator'
+                    ? 'bg-gold text-black font-bold shadow-sm shadow-gold/30'
+                    : 'text-neutral-300 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <GitCompare className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>{t.navComparator}</span>
+              </button>
+            </nav>
+
+            {/* 3. Right: Compact fitted action boxes & Hamburger Menu */}
+            <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+              
+              {/* Primary Action: Nuevo Inmueble (Clean, fitted compact box) */}
+              <button
+                id="nav-add-property-btn"
+                onClick={onOpenAddModal}
+                className="px-2.5 sm:px-3 py-1 sm:py-1.2 rounded-md bg-gold hover:bg-white text-black font-bold text-[11px] uppercase tracking-wider transition-all flex items-center gap-1 cursor-pointer shadow-sm shadow-gold/20 flex-shrink-0 active:scale-95 leading-none"
+                title={t.navNewProperty}
+              >
+                <Plus className="w-3 h-3 stroke-[2.5]" />
+                <span className="hidden sm:inline">{t.navNewProperty}</span>
+                <span className="inline sm:hidden">Inmueble</span>
+              </button>
+
+              {/* User Account Quick State (if logged in) */}
+              {user && (
+                <button
+                  onClick={() => setDrawerOpen(true)}
+                  className="hidden md:flex items-center gap-1.5 pl-1 pr-2 py-1 rounded-md bg-white/5 border border-gold/30 hover:border-gold text-xs transition-all cursor-pointer leading-none"
+                  title={`Usuario: ${user.name}`}
+                >
+                  <div className="w-4.5 h-4.5 rounded-full bg-gold text-black font-bold flex items-center justify-center text-[9.5px]">
+                    {user.name.charAt(0)}
+                  </div>
+                  <span className="text-white text-[10.5px] font-semibold truncate max-w-[70px]">
+                    {user.name.split(' ')[0]}
+                  </span>
+                </button>
+              )}
+
+              {/* 3 Lines Hamburger Menu Button (Fitted compact box) */}
+              <button
+                id="nav-drawer-toggle-btn"
+                onClick={() => setDrawerOpen(true)}
+                className="flex items-center gap-1 px-2 py-1 rounded-md border border-white/20 hover:border-gold text-neutral-200 hover:text-gold bg-white/[0.03] hover:bg-gold/10 transition-all cursor-pointer flex-shrink-0 leading-none"
+                aria-label="Abrir menú de herramientas y opciones"
+                title="Menú y Herramientas"
+              >
+                <Menu className="w-3.5 h-3.5 text-gold stroke-[2.5]" />
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-300">
+                  Menú
+                </span>
+              </button>
             </div>
           </div>
 
-          {/* Center Navigation Tabs */}
-          <nav className="hidden lg:flex items-center gap-1.5 p-1 rounded-xl glass border border-white/10">
+          {/* Secondary Tab Strip for Mobile / Tablet (< md) */}
+          <div className="flex md:hidden overflow-x-auto py-1.5 gap-1 border-t border-white/10 scrollbar-none items-center">
             <button
-              id="nav-tab-portfolio"
-              onClick={() => setActiveTab('portfolio')}
-              className={`px-4 py-2 rounded-lg text-[11px] uppercase tracking-wider font-bold transition-all flex items-center gap-2 cursor-pointer ${
-                activeTab === 'portfolio'
-                  ? 'bg-gold text-black shadow-md'
-                  : 'text-neutral-400 hover:text-white hover:bg-white/5'
+              onClick={() => handleTabChange('portfolio')}
+              className={`px-2.5 py-1 rounded-md text-[11px] font-semibold whitespace-nowrap uppercase tracking-wider flex items-center gap-1 transition-all flex-shrink-0 leading-none ${
+                activeTab === 'portfolio' 
+                  ? 'bg-gold text-black font-bold shadow-sm' 
+                  : 'text-neutral-300 hover:text-white bg-white/5'
               }`}
             >
-              <Building2 className="w-3.5 h-3.5" />
+              <Building2 className="w-3 h-3" />
               <span>{t.navPortfolio}</span>
             </button>
 
             <button
-              id="nav-tab-calculator"
-              onClick={() => setActiveTab('calculator')}
-              className={`px-4 py-2 rounded-lg text-[11px] uppercase tracking-wider font-bold transition-all flex items-center gap-2 cursor-pointer ${
-                activeTab === 'calculator'
-                  ? 'bg-gold text-black shadow-md'
-                  : 'text-neutral-400 hover:text-white hover:bg-white/5'
+              onClick={() => handleTabChange('calculator')}
+              className={`px-2.5 py-1 rounded-md text-[11px] font-semibold whitespace-nowrap uppercase tracking-wider flex items-center gap-1 transition-all flex-shrink-0 leading-none ${
+                activeTab === 'calculator' 
+                  ? 'bg-gold text-black font-bold shadow-sm' 
+                  : 'text-neutral-300 hover:text-white bg-white/5'
               }`}
             >
-              <BarChart3 className="w-3.5 h-3.5" />
+              <BarChart3 className="w-3 h-3" />
               <span>{t.navCalculator}</span>
               {selectedPropertyName && (
-                <span className="px-1.5 py-0.5 rounded bg-black/20 text-[9px] truncate max-w-[80px] normal-case font-mono-num">
+                <span className="px-1 rounded bg-black/20 text-[8px] truncate max-w-[55px] normal-case font-mono-num">
                   {selectedPropertyName}
                 </span>
               )}
             </button>
 
             <button
-              id="nav-tab-sensitivity"
-              onClick={() => setActiveTab('sensitivity')}
-              className={`px-4 py-2 rounded-lg text-[11px] uppercase tracking-wider font-bold transition-all flex items-center gap-2 cursor-pointer ${
-                activeTab === 'sensitivity'
-                  ? 'bg-gold text-black shadow-md'
-                  : 'text-neutral-400 hover:text-white hover:bg-white/5'
+              onClick={() => handleTabChange('sensitivity')}
+              className={`px-2.5 py-1 rounded-md text-[11px] font-semibold whitespace-nowrap uppercase tracking-wider flex items-center gap-1 transition-all flex-shrink-0 leading-none ${
+                activeTab === 'sensitivity' 
+                  ? 'bg-gold text-black font-bold shadow-sm' 
+                  : 'text-neutral-300 hover:text-white bg-white/5'
               }`}
             >
-              <Layers className="w-3.5 h-3.5" />
+              <Layers className="w-3 h-3" />
               <span>{t.navSensitivity}</span>
             </button>
 
             <button
-              id="nav-tab-comparator"
-              onClick={() => setActiveTab('comparator')}
-              className={`px-4 py-2 rounded-lg text-[11px] uppercase tracking-wider font-bold transition-all flex items-center gap-2 cursor-pointer ${
-                activeTab === 'comparator'
-                  ? 'bg-gold text-black shadow-md'
-                  : 'text-neutral-400 hover:text-white hover:bg-white/5'
+              onClick={() => handleTabChange('comparator')}
+              className={`px-2.5 py-1 rounded-md text-[11px] font-semibold whitespace-nowrap uppercase tracking-wider flex items-center gap-1 transition-all flex-shrink-0 leading-none ${
+                activeTab === 'comparator' 
+                  ? 'bg-gold text-black font-bold shadow-sm' 
+                  : 'text-neutral-300 hover:text-white bg-white/5'
               }`}
             >
-              <GitCompare className="w-3.5 h-3.5" />
+              <GitCompare className="w-3 h-3" />
               <span>{t.navComparator}</span>
-            </button>
-          </nav>
-
-          {/* Action Buttons & User / Demo Status */}
-          <div className="flex items-center gap-2 sm:gap-2.5">
-            {/* Language Switcher Toggle */}
-            <LanguageToggle />
-
-            {/* Workflow Tour Button */}
-            <button
-              id="nav-workflow-tour-btn"
-              onClick={onOpenWorkflowTour}
-              className="hidden xl:flex items-center gap-1.5 px-3 py-2 rounded-lg border border-gold/30 hover:border-gold text-gold text-xs font-semibold uppercase tracking-wider transition-all hover:bg-gold/10 cursor-pointer"
-              title="Ver Flujo de Trabajo"
-            >
-              <Compass className="w-3.5 h-3.5" />
-              <span>Tour</span>
-            </button>
-
-            {/* AI Advisor Button */}
-            <button
-              id="nav-advisor-btn"
-              onClick={onOpenAdvisorModal}
-              className="px-3 py-2 rounded-lg glass-gold text-gold border border-gold/40 text-xs font-semibold tracking-wider uppercase transition-all flex items-center gap-1.5 cursor-pointer hover:bg-gold/10"
-              title={t.navAdvisor}
-            >
-              <Bot className="w-3.5 h-3.5 text-gold" />
-              <span className="hidden sm:inline">{t.navAdvisor}</span>
-            </button>
-
-            {/* Executive Report Button */}
-            <button
-              id="nav-report-btn"
-              onClick={onOpenExecutiveReport}
-              className="px-3 py-2 rounded-lg border border-white/20 hover:border-gold/50 text-[#E5E5E5] text-xs font-semibold tracking-wider uppercase transition-all flex items-center gap-1.5 cursor-pointer hover:bg-white/5"
-            >
-              <FileText className="w-3.5 h-3.5 text-gold" />
-              <span className="hidden sm:inline">{t.navExecutiveReport}</span>
-            </button>
-
-            {/* Add Property Button */}
-            <button
-              id="nav-add-property-btn"
-              onClick={onOpenAddModal}
-              className="px-3.5 sm:px-4 py-2 rounded-lg bg-gold hover:bg-white text-black font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer shadow-md shadow-[#C5A059]/20"
-            >
-              <Plus className="w-3.5 h-3.5 stroke-[3]" />
-              <span className="hidden md:inline">{t.navNewProperty}</span>
-            </button>
-
-            {/* User Session Profile or Login CTA */}
-            {user ? (
-              <div className="relative">
-                <button
-                  onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-lg bg-white/5 border border-gold/40 hover:border-gold text-xs transition-all cursor-pointer"
-                >
-                  <div className="w-6 h-6 rounded-full bg-gold text-black font-bold flex items-center justify-center text-[10px]">
-                    {user.name.charAt(0)}
-                  </div>
-                  <div className="text-left hidden md:block max-w-[110px]">
-                    <div className="text-white text-[11px] font-semibold truncate leading-tight">
-                      {user.name.split(' ')[0]}
-                    </div>
-                    <div className="text-neutral-400 text-[8px] truncate leading-tight">
-                      {user.organization}
-                    </div>
-                  </div>
-                  <ChevronDown className="w-3 h-3 text-neutral-400" />
-                </button>
-
-                {showUserMenu && (
-                  <div className="absolute right-0 mt-2 w-64 rounded-xl bg-[#0D0D0D] border border-white/15 shadow-2xl p-3 z-50 animate-in fade-in slide-in-from-top-2">
-                    <div className="pb-3 border-b border-white/10">
-                      <div className="font-semibold text-white text-xs">{user.name}</div>
-                      <div className="text-[10px] text-neutral-400 truncate">{user.email}</div>
-                      <div className="text-[9px] text-gold font-mono-num mt-1">{user.organization}</div>
-                    </div>
-                    <button
-                      onClick={() => {
-                        setShowUserMenu(false);
-                        onSignOut();
-                      }}
-                      className="w-full mt-2.5 px-3 py-2 rounded-lg text-xs text-red-400 hover:bg-red-500/10 flex items-center gap-2 transition-colors cursor-pointer"
-                    >
-                      <LogOut className="w-3.5 h-3.5" />
-                      <span>{t.authSignOut}</span>
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <button
-                id="nav-login-cta-btn"
-                onClick={onOpenAuth}
-                className="px-3 sm:px-3.5 py-2 rounded-lg bg-gold/10 hover:bg-gold hover:text-black border border-gold/40 text-gold text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer"
-              >
-                <KeyRound className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">{t.authTabLogin}</span>
-              </button>
-            )}
-
-            {/* Return to Welcome Screen */}
-            <button
-              id="nav-welcome-screen-btn"
-              onClick={onOpenWelcome}
-              className="p-2 rounded-lg border border-white/10 hover:border-gold text-neutral-400 hover:text-gold transition-colors cursor-pointer"
-              title={t.navReturnHome}
-            >
-              <Home className="w-4 h-4" />
             </button>
           </div>
         </div>
+      </header>
 
-        {/* Mobile Navigation Tabs */}
-        <div className="flex lg:hidden overflow-x-auto py-2 gap-1 border-t border-white/10 scrollbar-none">
-          <button
-            onClick={() => setActiveTab('portfolio')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap uppercase tracking-wider ${
-              activeTab === 'portfolio' ? 'bg-gold text-black font-bold' : 'text-neutral-400'
-            }`}
+      {/* Elegant Side Drawer (Las tres líneas) */}
+      {drawerOpen && (
+        <div className="fixed inset-0 z-50 overflow-hidden no-print animate-in fade-in duration-200">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-black/75 backdrop-blur-sm transition-opacity"
+            onClick={() => setDrawerOpen(false)}
+          />
+
+          {/* Slide-out Panel */}
+          <div 
+            ref={drawerRef}
+            className="absolute inset-y-0 right-0 max-w-sm w-full bg-[#0D0D0D] border-l border-white/15 shadow-2xl flex flex-col justify-between overflow-y-auto animate-in slide-in-from-right duration-300"
           >
-            {t.navPortfolio}
-          </button>
-          <button
-            onClick={() => setActiveTab('calculator')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap uppercase tracking-wider ${
-              activeTab === 'calculator' ? 'bg-gold text-black font-bold' : 'text-neutral-400'
-            }`}
-          >
-            {t.navCalculator}
-          </button>
-          <button
-            onClick={() => setActiveTab('sensitivity')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap uppercase tracking-wider ${
-              activeTab === 'sensitivity' ? 'bg-gold text-black font-bold' : 'text-neutral-400'
-            }`}
-          >
-            {t.navSensitivity}
-          </button>
-          <button
-            onClick={() => setActiveTab('comparator')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap uppercase tracking-wider ${
-              activeTab === 'comparator' ? 'bg-gold text-black font-bold' : 'text-neutral-400'
-            }`}
-          >
-            {t.navComparator}
-          </button>
+            {/* Drawer Top Header */}
+            <div>
+              <div className="p-4 border-b border-white/10 flex items-center justify-between bg-black/40">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-5 h-5 border-[1.5px] border-gold rotate-45 flex items-center justify-center flex-shrink-0 bg-black/40 shadow-sm shadow-gold/20">
+                    <div className="w-1.5 h-1.5 bg-gold" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-xs uppercase tracking-widest text-white">
+                      Menú Institucional
+                    </h3>
+                    <p className="text-[9px] text-neutral-400 font-mono-num uppercase tracking-wider">
+                      EQUITIQ CRE INTELLIGENCE
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setDrawerOpen(false)}
+                  className="p-1 rounded-md border border-white/10 hover:border-gold text-neutral-400 hover:text-white transition-colors cursor-pointer"
+                  title="Cerrar menú"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Drawer Content */}
+              <div className="p-4 space-y-4">
+                
+                {/* 1. Herramientas Especiales & AI */}
+                <div>
+                  <div className="text-[9.5px] font-bold uppercase tracking-[0.18em] text-gold font-mono-num mb-2 px-1 flex items-center gap-1.5">
+                    <Sparkles className="w-3 h-3 text-gold" />
+                    <span>Herramientas Avanzadas</span>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    {/* Asesor IA */}
+                    <button
+                      onClick={() => {
+                        setDrawerOpen(false);
+                        onOpenAdvisorModal();
+                      }}
+                      className="w-full p-2.5 rounded-lg bg-white/[0.03] hover:bg-gold/10 border border-gold/30 hover:border-gold flex items-center justify-between text-left transition-all cursor-pointer group"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="p-1.5 rounded bg-gold/10 text-gold group-hover:bg-gold group-hover:text-black transition-colors">
+                          <Bot className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-white flex items-center gap-1">
+                            <span>{t.navAdvisor}</span>
+                            <span className="px-1 py-0.2 rounded bg-gold text-black text-[8px] font-bold">AI</span>
+                          </div>
+                          <div className="text-[10px] text-neutral-400">
+                            Análisis cuantitativo con Gemini
+                          </div>
+                        </div>
+                      </div>
+                      <ChevronRight className="w-3.5 h-3.5 text-neutral-500 group-hover:text-gold transition-colors" />
+                    </button>
+
+                    {/* Memorando Ejecutivo */}
+                    <button
+                      onClick={() => {
+                        setDrawerOpen(false);
+                        onOpenExecutiveReport();
+                      }}
+                      className="w-full p-2.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/10 hover:border-gold/50 flex items-center justify-between text-left transition-all cursor-pointer group"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="p-1.5 rounded bg-white/10 text-gold group-hover:bg-gold group-hover:text-black transition-colors">
+                          <FileText className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-white">
+                            {t.navExecutiveReport}
+                          </div>
+                          <div className="text-[10px] text-neutral-400">
+                            Teasers para comités de inversión
+                          </div>
+                        </div>
+                      </div>
+                      <ChevronRight className="w-3.5 h-3.5 text-neutral-500 group-hover:text-gold transition-colors" />
+                    </button>
+
+                    {/* Workflow Tour */}
+                    <button
+                      onClick={() => {
+                        setDrawerOpen(false);
+                        onOpenWorkflowTour();
+                      }}
+                      className="w-full p-2.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/10 hover:border-gold/50 flex items-center justify-between text-left transition-all cursor-pointer group"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="p-1.5 rounded bg-white/10 text-gold group-hover:bg-gold group-hover:text-black transition-colors">
+                          <Compass className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-white">
+                            Workflow Tour Guiado
+                          </div>
+                          <div className="text-[10px] text-neutral-400">
+                            Guía del proceso de underwriting
+                          </div>
+                        </div>
+                      </div>
+                      <ChevronRight className="w-3.5 h-3.5 text-neutral-500 group-hover:text-gold transition-colors" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* 2. Preferencias & Idioma */}
+                <div>
+                  <div className="text-[9.5px] font-bold uppercase tracking-[0.18em] text-neutral-400 font-mono-num mb-2 px-1">
+                    Configuración & Idioma
+                  </div>
+                  
+                  <div className="p-2.5 rounded-lg bg-white/[0.02] border border-white/10 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Globe className="w-3.5 h-3.5 text-gold" />
+                      <span className="text-xs font-medium text-neutral-300">Idioma</span>
+                    </div>
+                    <LanguageToggle variant="full" />
+                  </div>
+                </div>
+
+                {/* 3. Acciones Globales */}
+                <div className="space-y-1.5 pt-1">
+                  <button
+                    onClick={() => {
+                      setDrawerOpen(false);
+                      onOpenAddModal();
+                    }}
+                    className="w-full py-2.5 rounded-lg bg-gold hover:bg-white text-black font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-md shadow-gold/20 cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+                    <span>{t.navNewProperty}</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setDrawerOpen(false);
+                      onOpenWelcome();
+                    }}
+                    className="w-full py-2 rounded-lg border border-white/15 hover:border-gold text-neutral-300 hover:text-gold text-xs font-medium flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <Home className="w-3.5 h-3.5" />
+                    <span>{t.navReturnHome}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Drawer Footer: User Session Management */}
+            <div className="p-4 border-t border-white/10 bg-black/60">
+              {user ? (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-full bg-gold text-black font-bold flex items-center justify-center text-xs">
+                        {user.name.charAt(0)}
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-white flex items-center gap-1">
+                          <span>{user.name}</span>
+                          <ShieldCheck className="w-3 h-3 text-gold" />
+                        </div>
+                        <div className="text-[9.5px] text-neutral-400 truncate max-w-[150px]">
+                          {user.email}
+                        </div>
+                      </div>
+                    </div>
+                    <span className="text-[8.5px] px-1.5 py-0.5 rounded bg-gold/10 text-gold border border-gold/30 font-mono-num">
+                      {user.role}
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      setDrawerOpen(false);
+                      onSignOut();
+                    }}
+                    className="w-full py-1.5 rounded-md text-xs text-red-400 border border-red-500/30 hover:bg-red-500/10 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <LogOut className="w-3 h-3" />
+                    <span>{t.authSignOut}</span>
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    setDrawerOpen(false);
+                    onOpenAuth();
+                  }}
+                  className="w-full py-2.5 rounded-lg bg-white/5 hover:bg-gold hover:text-black border border-gold/40 text-gold text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                >
+                  <KeyRound className="w-3.5 h-3.5" />
+                  <span>{t.authTabLogin}</span>
+                </button>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
-    </header>
+      )}
+    </>
   );
 };
-
