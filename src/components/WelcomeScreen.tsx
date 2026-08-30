@@ -24,6 +24,7 @@ import { CommercialProperty } from '../types';
 import { calculatePropertyFinancials, formatCurrency, formatPercent, formatNumber } from '../utils/financialCalculations';
 import { useLanguage } from '../context/LanguageContext';
 import { LanguageToggle } from './LanguageToggle';
+import { EquitiqLogo } from './common/EquitiqLogo';
 
 interface WelcomeScreenProps {
   onEnter: (targetTab?: 'portfolio' | 'calculator' | 'sensitivity' | 'comparator') => void;
@@ -78,19 +79,13 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
 
       {/* Top Brand Bar */}
       <header className="relative z-10 w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between border-b border-white/10">
-        <div className="flex items-center gap-4">
-          {/* Sophisticated Diamond Logo Emblem */}
-          <div className="w-7 h-7 border-2 border-gold rotate-45 flex items-center justify-center">
-            <div className="w-1.5 h-1.5 bg-gold" />
-          </div>
-          <div>
-            <span className="font-sans text-xs tracking-[0.4em] uppercase font-semibold text-gold">
-              EQUITIQ COMMERCIAL
-            </span>
-            <span className="block text-[9px] tracking-[0.25em] text-neutral-500 uppercase font-mono-num">
-              {t.welcomeTag}
-            </span>
-          </div>
+        <div className="flex items-center">
+          <EquitiqLogo 
+            size="md" 
+            showSubtitle={true}
+            subtitleText={t.welcomeTag || 'INSTITUTIONAL REAL ESTATE INTELLIGENCE PLATFORM'}
+            interactive={true}
+          />
         </div>
 
         <div className="flex items-center gap-3 sm:gap-4">

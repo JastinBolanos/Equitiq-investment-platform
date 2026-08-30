@@ -22,6 +22,7 @@ import { CurrencyConfig } from '../types';
 import { useLanguage } from '../context/LanguageContext';
 import { LanguageToggle } from './LanguageToggle';
 import { UserSession } from './AuthModal';
+import { EquitiqLogo } from './common/EquitiqLogo';
 
 interface NavbarProps {
   activeTab: 'portfolio' | 'calculator' | 'sensitivity' | 'comparator';
@@ -90,25 +91,20 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Main sleek, compact navbar row */}
           <div className="flex items-center justify-between h-13 sm:h-14 gap-2 sm:gap-4">
             
-            {/* 1. Left: Brand Logo & Title */}
+            {/* 1. Left: Brand Animated Rotating Logo & Title */}
             <div 
               id="nav-brand-logo"
-              className="flex items-center gap-2.5 sm:gap-3 cursor-pointer py-1 group flex-shrink-0"
+              className="flex items-center flex-shrink-0"
               onClick={onOpenWelcome}
               title={t.navReturnHome}
             >
-              {/* Emblem Cubito Dorado (Diamond with center cube/diamond) */}
-              <div className="w-6 h-6 border-[1.5px] border-gold rotate-45 flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110 shadow-sm shadow-gold/20 bg-black/40">
-                <div className="w-1.5 h-1.5 bg-gold" />
-              </div>
-              <div className="flex flex-col min-w-0">
-                <span className="font-sans font-bold text-xs sm:text-sm tracking-[0.18em] uppercase text-white group-hover:text-gold transition-colors leading-none">
-                  {t.brandName}
-                </span>
-                <span className="hidden 2xl:block text-[7.5px] tracking-[0.18em] text-neutral-400 uppercase font-mono-num leading-tight mt-0.5">
-                  {t.brandTagline}
-                </span>
-              </div>
+              <EquitiqLogo 
+                size="sm" 
+                showSubtitle={true}
+                subtitleText="INSTITUTIONAL REAL ESTATE INTELLIGENCE"
+                className="py-1"
+                interactive={true}
+              />
             </div>
 
             {/* 2. Center: Compact, perfectly fitted primary tab box (Desktop / Laptop) */}
@@ -293,19 +289,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Drawer Top Header */}
             <div>
               <div className="p-4 border-b border-white/10 flex items-center justify-between bg-black/40">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-5 h-5 border-[1.5px] border-gold rotate-45 flex items-center justify-center flex-shrink-0 bg-black/40 shadow-sm shadow-gold/20">
-                    <div className="w-1.5 h-1.5 bg-gold" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-xs uppercase tracking-widest text-white">
-                      Menú Institucional
-                    </h3>
-                    <p className="text-[9px] text-neutral-400 font-mono-num uppercase tracking-wider">
-                      EQUITIQ CRE INTELLIGENCE
-                    </p>
-                  </div>
-                </div>
+                <EquitiqLogo 
+                  size="xs" 
+                  showSubtitle={true}
+                  subtitleText="CRE INTELLIGENCE PLATFORM"
+                  interactive={true}
+                />
 
                 <button
                   onClick={() => setDrawerOpen(false)}
