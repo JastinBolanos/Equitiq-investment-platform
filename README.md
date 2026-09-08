@@ -7,7 +7,18 @@
 
 > **EQUITIQ** es la suite institucional de grado empresarial diseñada para la orquestación, underwriting, simulación econométrica y gestión integral de carteras de inversión en Commercial Real Estate (CRE). La plataforma implementa modelos deterministas de flujos descontados (DCF), matrices de estrés multidimensional, cobertura de servicio de deuda (DSCR) y optimización de estructura de capital bajo estándares internacionales de reporting financiero.
 >
-> [Ver Plataforma en Vivo (Producción) 🟢](https://equitiq-platform.internal.network/live-demo)
+> **[Ver Plataforma en Vivo (Producción) 🟢](https://equitiq.vercel.app)**
+
+![Vista Previa de EQUITIQ](https://github.com/user-attachments/assets/666398c1-bce2-4693-a72e-3243282a2c9d)
+
+---
+
+## 🎥 Demostración de la Plataforma Financiera
+
+**🎬 Análisis y Simulación de Inversiones Inmobiliarias (CRE)**  
+Recorrido operativo a través del motor financiero: gestión de portafolios de activos, modelos de flujos descontados (DCF), matrices de sensibilidad multidimensional y generación automatizada de reportes ejecutivos para comités de inversión.
+
+https://github.com/user-attachments/assets/da113871-35dc-4c1c-a09b-54c36f9697d7
 
 ---
 
