@@ -334,7 +334,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                             <span className="px-1 py-0.2 rounded bg-gold text-black text-[8px] font-bold">AI</span>
                           </div>
                           <div className="text-[10px] text-neutral-400">
-                            Análisis cuantitativo con Gemini
+                            Análisis cuantitativo de rendimientos
                           </div>
                         </div>
                       </div>

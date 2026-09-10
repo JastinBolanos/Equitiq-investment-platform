@@ -5,30 +5,30 @@
 [![Architecture & Compliance](https://img.shields.io/badge/Compliance-Clean%20Architecture%20%7C%20ISO%2027001-2563EB?style=for-the-badge)](https://github.com/)
 [![Security Proxy](https://img.shields.io/badge/Security-Zero--Trust%20Proxy-111827?style=for-the-badge&logo=shield&logoColor=white)](https://github.com/)
 
-> **EQUITIQ** es la suite institucional de grado empresarial diseñada para la orquestación, underwriting, simulación econométrica y gestión integral de carteras de inversión en Commercial Real Estate (CRE). La plataforma implementa modelos deterministas de flujos descontados (DCF), matrices de estrés multidimensional, cobertura de servicio de deuda (DSCR) y optimización de estructura de capital bajo estándares internacionales de reporting financiero.
+> **EQUITIQ** is an enterprise-grade institutional suite designed for Commercial Real Estate (CRE) portfolio orchestration, underwriting, econometric simulation, and comprehensive asset management. The platform implements deterministic Discounted Cash Flow (DCF) models, multidimensional stress testing matrices, Debt Service Coverage Ratio (DSCR) analysis, and capital structure optimization under international financial reporting standards.
 >
-> **[Ver Plataforma en Vivo (Producción) 🟢](https://equitiq.vercel.app)**
+> **[View Live Platform (Production) 🟢](https://equitiq.vercel.app)**
 
-![Vista Previa de EQUITIQ](https://github.com/user-attachments/assets/666398c1-bce2-4693-a72e-3243282a2c9d)
+![EQUITIQ Preview](https://github.com/user-attachments/assets/666398c1-bce2-4693-a72e-3243282a2c9d)
 
 ---
 
-## 🎥 Demostración de la Plataforma Financiera
+## 🎥 Financial Platform Demonstration
 
-**🎬 Análisis y Simulación de Inversiones Inmobiliarias (CRE)**  
-Recorrido operativo a través del motor financiero: gestión de portafolios de activos, modelos de flujos descontados (DCF), matrices de sensibilidad multidimensional y generación automatizada de reportes ejecutivos para comités de inversión.
+**🎬 Commercial Real Estate (CRE) Investment Analysis & Simulation**  
+Operational walkthrough of the financial engine: asset portfolio management, discounted cash flow (DCF) models, multidimensional sensitivity matrices, and automated executive report generation for investment committees.
 
 https://github.com/user-attachments/assets/da113871-35dc-4c1c-a09b-54c36f9697d7
 
 ---
 
-> *Nota de Seguridad y Cumplimiento Normativo:* Este repositorio comprende la capa de orquestación de cliente, micro-frontend y proxy de borde seguro. Los servicios de persistencia distribuida, microservicios transaccionales de backend y motores de liquidación bancaria permanecen en repositorios privados y redes aisladas (VPC) bajo estrictas políticas de gobernanza, confidencialidad y cumplimiento normativo (SOC2 / ISO 27001).
+> *Security & Regulatory Compliance Notice:* This repository comprises the client orchestration layer, micro-frontend, and secure edge proxy. Distributed persistence services, backend transactional microservices, and banking settlement engines reside in private repositories and isolated networks (VPC) under strict governance, confidentiality, and regulatory compliance policies (SOC2 / ISO 27001).
 
 ---
 
-## 🏛️ Arquitectura de Sistema y Stack Tecnológico
+## 🏛️ System Architecture & Technology Stack
 
-La solución está estructurada siguiendo principios de **Clean Architecture**, desacoplando los motores matemáticos deterministas de las capas de presentación y orquestación de contexto.
+The solution is structured following **Clean Architecture** principles, decoupling deterministic mathematical engines from presentation and context orchestration layers.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -37,119 +37,111 @@ La solución está estructurada siguiendo principios de **Clean Architecture**, 
 │      UI & Motion Layer       │    Financial Core Engines    │
 │  (React 19 + Tailwind CSS)   │   (DCF, IRR, Amortization)   │
 ├──────────────────────────────┼──────────────────────────────┤
-│     Cognitive AI Layer       │     Security & Edge Proxy    │
-│    (@google/genai SDK)       │    (Express + Vite Engine)   │
+│   Analytics & Logic Layer    │     Security & Edge Proxy    │
+│    (Econometric Models)      │    (Express + Vite Engine)   │
 └──────────────────────────────┴──────────────────────────────┘
 ```
 
-### Especificación de Dependencias Clave (`package.json`)
+### Key Dependencies Specification (`package.json`)
 
 * **Core & Runtime:**
-  * `react` (`^19.0.1`) & `react-dom` (`^19.0.1`): Capa de renderizado concurrente y ciclo de vida de componentes de última generación.
-  * `typescript` (`~5.8.2`): Sistema de tipado estático estricto para modelos patrimoniales y contratos de dominio.
+  * `react` (`^19.0.1`) & `react-dom` (`^19.0.1`): Concurrent rendering layer and next-generation component lifecycle.
+  * `typescript` (`~5.8.2`): Strict static typing system for asset models and domain contracts.
 
 * **UI, Visual Analytics & Motion:**
-  * `tailwindcss` (`^4.1.14`) & `@tailwindcss/vite` (`^4.1.14`): Motor de diseño utilitario de alto rendimiento con temática dark/luxury institutional.
-  * `recharts` (`^3.10.1`): Motor de renderizado vectorial de telemetría financiera y proyecciones de flujos.
-  * `motion` (`^12.23.24`): Orquestador de transiciones declarativas de estados de interfaz.
-  * `lucide-react` (`^0.546.0`): Sistema unificado de iconografía técnica.
-  * `canvas-confetti` (`^1.9.4`): Retroalimentación visual háptica para eventos de alta prioridad.
+  * `tailwindcss` (`^4.1.14`) & `@tailwindcss/vite` (`^4.1.14`): High-performance utility design engine with dark/luxury institutional styling.
+  * `recharts` (`^3.10.1`): Vector rendering engine for financial telemetry and cash flow projections.
+  * `motion` (`^12.23.24`): Declarative interface state transition orchestrator.
+  * `lucide-react` (`^0.546.0`): Unified technical iconography system.
+  * `canvas-confetti` (`^1.9.4`): Haptic visual feedback for high-priority milestone events.
 
-* **Motor de Inferencia e Inteligencia:**
-  * `@google/genai` (`^2.4.0`): SDK de inferencia para análisis cualitativo y auditoría asistida de escenarios de inversión.
-
-* **Backend, Proxy & Servidor de Borde:**
-  * `express` (`^4.21.2`): Servidor de borde y proxy reverso para mediación segura de endpoints.
-  * `vite` (`^6.2.3`): Herramienta de compilación optimizada y módulo de servidor HMR.
-  * `tsx` (`^4.21.0`) & `esbuild` (`^0.25.0`): Compilador y ejecutor de TypeScript en runtime de servidor.
-  * `dotenv` (`^17.2.3`): Gestión segura de variables de entorno del sistema.
+* **Backend, Proxy & Edge Server:**
+  * `express` (`^4.21.2`): Edge server and reverse proxy for secure endpoint mediation.
+  * `vite` (`^6.2.3`): Optimized compilation tool and HMR server module.
+  * `tsx` (`^4.21.0`) & `esbuild` (`^0.25.0`): TypeScript compiler and executor in server runtime.
 
 ---
 
-## 📦 Módulos Operativos (Desplegados)
+## 📦 Operational Modules (Deployed)
 
 1. **Asset Management & Portfolio Orchestration (`PortfolioView`)**
-   * Control y supervisión de métricas macro: Gross Asset Value (GAV), Net Operating Income (NOI), Cap Rate ponderado global y tasa de desocupación estructural.
-   * Filtros multidimensionales por tipología (Oficinas, Industrial/Logístico, Retail, Salud, Hospitality) y geolocalización.
+   * Control and monitoring of macro metrics: Gross Asset Value (GAV), Net Operating Income (NOI), global weighted Cap Rate, and structural vacancy rates.
+   * Multidimensional filters by typology (Office, Industrial/Logistics, Retail, Healthcare, Hospitality) and geolocation.
 
 2. **Underwriting & Financial Modeling Core (`FinancialCalculator`)**
-   * Modelado integral de estructuras de capital: Modelos de amortización de deuda, ratios LTV/DSCR, retornos Cash-on-Cash y proyecciones DCF con escalamiento inflacionario.
+   * Comprehensive capital structure modeling: Debt amortization schedules, LTV/DSCR ratios, Cash-on-Cash returns, and inflation-escalated DCF projections.
 
 3. **Multivariable Stress & Sensitivity Matrix (`SensitivityMatrix`)**
-   * Análisis de escenarios bidimensionales evaluando variaciones cruzadas de tasas de interés, *Exit Cap Rates* y variaciones en ocupación sobre la Tasa Interna de Retorno (TIR).
+   * Two-dimensional scenario analysis evaluating cross-variations of interest rates, *Exit Cap Rates*, and occupancy fluctuations on the Internal Rate of Return (IRR).
 
 4. **Cross-Asset Comparative Analytics (`AssetComparator`)**
-   * Benchmarking simultáneo de activos comerciales, ponderando métricas de rendimiento financiero, perfil crediticio de inquilinos y Weighted Average Lease Term (WALT).
+   * Simultaneous benchmarking of commercial assets, weighing financial performance metrics, tenant credit profiles, and Weighted Average Lease Term (WALT).
 
 5. **AI Investment Advisor & Executive Reporting (`AiAdvisorModal`, `ExecutiveReportModal`)**
-   * Generación automatizada de tesis de inversión y síntesis ejecutivas auditables para comités de inversión y comités fiduciarios.
+   * Automated generation of investment theses and auditable executive summaries for investment and fiduciary committees.
 
 ---
 
-## 🚀 Guía de Despliegue y Auditoría
+## 🚀 Deployment & Audit Guide
 
-### Requisitos de Entorno
-* **Node.js**: `v20.0.0` o superior (LTS recomendado).
-* **Gestor de Paquetes**: `npm` `v10.0.0+`.
+### Environment Prerequisites
+* **Node.js**: `v20.0.0` or higher (LTS recommended).
+* **Package Manager**: `npm` `v10.0.0+`.
 
-### Pasos de Despliegue Local
+### Local Deployment Steps
 
-1. **Clonación de Repositorio:**
+1. **Clone the Repository:**
    ```bash
    git clone https://github.com/JastinBolanos/equitiq-investment-platform.git
    cd equitiq-investment-platform
    ```
 
-2. **Instalación de Dependencias:**
+2. **Install Dependencies:**
    ```bash
    npm install
    ```
 
-3. **Aprovisionamiento de Variables de Entorno:**
-   ```bash
-   cp .env.example .env
-   ```
-
-4. **Ejecución en Entorno de Desarrollo / Sandbox:**
+3. **Run in Development / Sandbox Environment:**
    ```bash
    npm run dev
    ```
-   *Acceso al gateway local: `http://localhost:3000`*
+   *Access the local gateway at: `http://localhost:3000`*
 
 ---
 
-## ⚙️ Herramientas de Integración y Despliegue (CI/CD)
+## ⚙️ Integration & Deployment Tools (CI/CD)
 
-| Comando | Contexto de Ejecución | Descripción del Pipeline |
+| Command | Execution Context | Pipeline Description |
 | :--- | :--- | :--- |
-| `npm run dev` | Desarrollo Local / Edge | Inicia el servidor de desarrollo y proxy con recarga en caliente en el puerto 3000. |
-| `npm run build` | Pipeline CI/CD | Ejecuta la compilación de producción de Vite y empaqueta el servidor con esbuild en `dist/`. |
-| `npm run lint` | Auditoría de Código | Valida consistencia sintáctica, tipado estricto y ausencia de regresiones con `tsc --noEmit`. |
-| `npm start` | Runtime de Producción | Lanza el artefacto empaquetado `dist/server.cjs` para ejecución contenerizada. |
+| `npm run dev` | Local Development / Edge | Launches the development server and proxy with hot module replacement on port 3000. |
+| `npm run build` | CI/CD Pipeline | Executes Vite production bundling and bundles the server using esbuild into `dist/`. |
+| `npm run lint` | Code Audit | Validates syntactic consistency, strict typing, and absence of regressions using `tsc --noEmit`. |
+| `npm start` | Production Runtime | Starts the bundled artifact `dist/server.cjs` for containerized execution. |
 
 ---
 
-## 📂 Arquitectura de Dominio (`src/`)
+## 📂 Domain Architecture (`src/`)
 
 ```
 src/
-├── components/          # Componentes modulares y vistas operativas (Portfolio, Calculator, Matrix, etc.)
-│   ├── calculator/      # Submódulos de ingresos, OpEx, valuación de salida y proyecciones
-│   ├── common/          # Primitivas visuales institucionales (KPI cards, toggles, badges)
-│   ├── detail/          # Pestañas de auditoría de activo (inquilinos, gastos, flujos)
-│   └── portfolio/       # Componentes de agregación y tablas de activos
-├── context/             # Proveedores globales de estado (i18n, divisas)
-├── core/                # Constantes inmutables, enums y tipos base de dominio
-├── data/                # Dataset inicial estructurado y modelos de referencia
-├── hooks/               # Custom hooks de orquestación de sesión, portafolio y escenarios
-├── i18n/                # Diccionarios de traducción corporativa (ES / EN)
-├── services/            # Capa de servicios matemáticos y formateo desacoplado
-│   ├── financial/       # Motores de amortización, DCF, cálculo de TIR numérica y sensibilidad
-│   ├── formatters/      # Formateadores monetarios e indicadores de precisión
-│   └── storage/         # Abstracción de persistencia local segura
-└── utils/               # Funciones utilitarias y cálculos auxiliares
+├── components/          # Modular components and operational views (Portfolio, Calculator, Matrix, etc.)
+│   ├── calculator/      # Revenue, OpEx, exit valuation, and cash flow projection submodules
+│   ├── common/          # Institutional visual primitives (KPI cards, toggles, badges)
+│   ├── detail/          # Asset audit tabs (tenants, operating expenses, cash flows)
+│   └── portfolio/       # Asset aggregation components and data tables
+├── context/             # Global state providers (i18n, currencies)
+├── core/                # Immutable constants, enums, and base domain types
+├── data/                # Initial structured dataset and reference models
+├── hooks/               # Custom orchestration hooks for session, portfolio, and scenarios
+├── i18n/                # Corporate translation dictionaries (ES / EN)
+├── services/            # Decoupled mathematical service and formatting layer
+│   ├── financial/       # Amortization engines, DCF, numerical IRR solver, and sensitivity models
+│   ├── formatters/      # Currency formatters and precision indicators
+│   └── storage/         # Secure local persistence abstraction
+└── utils/               # Utility functions and auxiliary calculations
 ```
 
 ---
 
-Propiedad de Arquitectura de Software - Jastin Bolaños © 2026. Proyecto de Demostración Técnica Empresarial.
+Software Architecture Ownership - Jastin Bolaños © 2026. Enterprise Technical Demonstration Project.
+
