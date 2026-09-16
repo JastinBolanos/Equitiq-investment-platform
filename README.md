@@ -1,17 +1,29 @@
-# EQUITIQ Enterprise Platform `v2.0.0-ENT`
+<div align="center">
+  <img alt="EQUITIQ Banner" src="https://github.com/user-attachments/assets/74bf4c12-394b-468a-ab64-41d3a10327bf" width="50%" />
 
-[![Build Status](https://img.shields.io/badge/Build-Passing-059669?style=for-the-badge&logo=github-actions&logoColor=white)](https://github.com/)
-[![Deployment Status](https://img.shields.io/badge/Deployment-Live%20Edge-C5A059?style=for-the-badge&logo=google-cloud&logoColor=white)](https://github.com/)
-[![Architecture & Compliance](https://img.shields.io/badge/Compliance-Clean%20Architecture%20%7C%20ISO%2027001-2563EB?style=for-the-badge)](https://github.com/)
-[![Security Proxy](https://img.shields.io/badge/Security-Zero--Trust%20Proxy-111827?style=for-the-badge&logo=shield&logoColor=white)](https://github.com/)
+  <br>
+
+  <h3>Enterprise Platform (v2.0.0-ENT)</h3>
+
+  <p>
+    <img src="https://img.shields.io/badge/Build-Passing-059669?style=for-the-badge&logo=github-actions&logoColor=white" alt="Build Status" />
+    <img src="https://img.shields.io/badge/Deployment-Live%20Edge-C5A059?style=for-the-badge&logo=google-cloud&logoColor=white" alt="Deployment Status" />
+    <img src="https://img.shields.io/badge/Compliance-Clean%20Architecture%20%7C%20ISO%2027001-2563EB?style=for-the-badge" alt="Architecture & Compliance" />
+    <img src="https://img.shields.io/badge/Security-Zero--Trust%20Proxy-111827?style=for-the-badge&logo=shield&logoColor=white" alt="Security Proxy" />
+  </p>
+</div>
+
+<br>
 
 > **EQUITIQ** is an enterprise-grade institutional suite designed for Commercial Real Estate (CRE) portfolio orchestration, underwriting, econometric simulation, and comprehensive asset management. The platform implements deterministic Discounted Cash Flow (DCF) models, multidimensional stress testing matrices, Debt Service Coverage Ratio (DSCR) analysis, and capital structure optimization under international financial reporting standards.
->
-> **[View Live Platform (Production) 🟢](https://equitiq.vercel.app)**
 
-![EQUITIQ Preview](https://github.com/user-attachments/assets/666398c1-bce2-4693-a72e-3243282a2c9d)
+<br>
 
----
+<div align="center">
+  <h3>🌍 <b><a href="https://equitiq.vercel.app">View Live Platform (Production) 🟢</a></b></h3>
+  <br>
+  <img alt="EQUITIQ Preview" src="https://github.com/user-attachments/assets/666398c1-bce2-4693-a72e-3243282a2c9d" width="70%" />
+</div>
 
 ## 🎥 Financial Platform Demonstration
 
