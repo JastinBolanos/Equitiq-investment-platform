@@ -15,32 +15,32 @@
 
 <br>
 
-> **EQUITIQ** is an enterprise-grade institutional suite designed for Commercial Real Estate (CRE) portfolio orchestration, underwriting, econometric simulation, and comprehensive asset management. The platform implements deterministic Discounted Cash Flow (DCF) models, multidimensional stress testing matrices, Debt Service Coverage Ratio (DSCR) analysis, and capital structure optimization under international financial reporting standards.
+> **EQUITIQ** is an exploratory Commercial Real Estate (CRE) analytics and portfolio modeling client interface. The application features interactive financial calculations including Discounted Cash Flow (DCF) simulations, multi-variable sensitivity matrices, Debt Service Coverage Ratio (DSCR) modeling, and capital structure visualizations within a modern dark-themed dashboard.
 
 <br>
 
 <div align="center">
   <h3>🌍 <b><a href="https://equitiq.vercel.app">View Live Platform (Production) 🟢</a></b></h3>
   <br>
-  <img alt="EQUITIQ Preview" src="https://github.com/user-attachments/assets/666398c1-bce2-4693-a72e-3243282a2c9d" width="70%" />
+  <img alt="EQUITIQ Preview" src="https://github.com/user-attachments/assets/666398c1-bce2-4693-a72e-3243282a2c9d" width="80%" />
 </div>
 
 ## 🎥 Financial Platform Demonstration
 
 **🎬 Commercial Real Estate (CRE) Investment Analysis & Simulation**  
-Operational walkthrough of the financial engine: asset portfolio management, discounted cash flow (DCF) models, multidimensional sensitivity matrices, and automated executive report generation for investment committees.
+Interface walkthrough of the client application: asset portfolio views, interactive discounted cash flow (DCF) models, multidimensional sensitivity matrices, and structured executive summary generators.
 
 https://github.com/user-attachments/assets/da113871-35dc-4c1c-a09b-54c36f9697d7
 
 ---
 
-> *Security & Regulatory Compliance Notice:* This repository comprises the client orchestration layer, micro-frontend, and secure edge proxy. Distributed persistence services, backend transactional microservices, and banking settlement engines reside in private repositories and isolated networks (VPC) under strict governance, confidentiality, and regulatory compliance policies (SOC2 / ISO 27001).
+> *Architecture Note:* This repository contains the client-side user interface, interactive financial calculators, and local edge proxy. Real-world institutional transactional databases and settlement services are simulated locally to provide a complete, self-contained demonstration environment.
 
 ---
 
 ## 🏛️ System Architecture & Technology Stack
 
-The solution is structured following **Clean Architecture** principles, decoupling deterministic mathematical engines from presentation and context orchestration layers.
+The project follows clean frontend architecture principles, separating calculation and mathematical helper logic from user interface presentation components and state management.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -57,40 +57,40 @@ The solution is structured following **Clean Architecture** principles, decoupli
 ### Key Dependencies Specification (`package.json`)
 
 * **Core & Runtime:**
-  * `react` (`^19.0.1`) & `react-dom` (`^19.0.1`): Concurrent rendering layer and next-generation component lifecycle.
-  * `typescript` (`~5.8.2`): Strict static typing system for asset models and domain contracts.
+  * `react` (`^19.0.1`) & `react-dom` (`^19.0.1`): Declarative UI rendering and modern component lifecycle management.
+  * `typescript` (`~5.8.2`): Strict static typing across asset models, financial calculations, and domain schemas.
 
 * **UI, Visual Analytics & Motion:**
-  * `tailwindcss` (`^4.1.14`) & `@tailwindcss/vite` (`^4.1.14`): High-performance utility design engine with dark/luxury institutional styling.
-  * `recharts` (`^3.10.1`): Vector rendering engine for financial telemetry and cash flow projections.
-  * `motion` (`^12.23.24`): Declarative interface state transition orchestrator.
-  * `lucide-react` (`^0.546.0`): Unified technical iconography system.
-  * `canvas-confetti` (`^1.9.4`): Haptic visual feedback for high-priority milestone events.
+  * `tailwindcss` (`^4.1.14`) & `@tailwindcss/vite` (`^4.1.14`): Utility-first styling engine with a dark institutional color scheme.
+  * `recharts` (`^3.10.1`): Responsive charts for financial indicators, amortization, and cash flow projections.
+  * `motion` (`^12.23.24`): Smooth state transitions and dialog entrance animations.
+  * `lucide-react` (`^0.546.0`): Consistent, minimalist technical iconography.
+  * `canvas-confetti` (`^1.9.4`): Visual feedback for key interactive milestone actions.
 
 * **Backend, Proxy & Edge Server:**
-  * `express` (`^4.21.2`): Edge server and reverse proxy for secure endpoint mediation.
-  * `vite` (`^6.2.3`): Optimized compilation tool and HMR server module.
-  * `tsx` (`^4.21.0`) & `esbuild` (`^0.25.0`): TypeScript compiler and executor in server runtime.
+  * `express` (`^4.21.2`): Lightweight local proxy server for endpoint handling.
+  * `vite` (`^6.2.3`): Fast development server and production bundler.
+  * `tsx` (`^4.21.0`) & `esbuild` (`^0.25.0`): TypeScript server compilation and bundling tools.
 
 ---
 
 ## 📦 Operational Modules (Deployed)
 
-1. **Asset Management & Portfolio Orchestration (`PortfolioView`)**
-   * Control and monitoring of macro metrics: Gross Asset Value (GAV), Net Operating Income (NOI), global weighted Cap Rate, and structural vacancy rates.
-   * Multidimensional filters by typology (Office, Industrial/Logistics, Retail, Healthcare, Hospitality) and geolocation.
+1. **Asset Management & Portfolio Overview (`PortfolioView`)**
+   * Clear display of key portfolio metrics: Gross Asset Value (GAV), Net Operating Income (NOI), weighted Cap Rate, and vacancy rates.
+   * Multi-variable filtering across typologies (Office, Industrial/Logistics, Retail, Healthcare, Hospitality) and regional locations.
 
-2. **Underwriting & Financial Modeling Core (`FinancialCalculator`)**
-   * Comprehensive capital structure modeling: Debt amortization schedules, LTV/DSCR ratios, Cash-on-Cash returns, and inflation-escalated DCF projections.
+2. **Underwriting & Financial Calculations (`FinancialCalculator`)**
+   * Capital structure modeling tools: Debt amortization schedules, LTV/DSCR calculations, Cash-on-Cash returns, and multi-year DCF projections.
 
 3. **Multivariable Stress & Sensitivity Matrix (`SensitivityMatrix`)**
-   * Two-dimensional scenario analysis evaluating cross-variations of interest rates, *Exit Cap Rates*, and occupancy fluctuations on the Internal Rate of Return (IRR).
+   * Interactive scenario matrices evaluating the impact of varying interest rates, exit capitalization rates, and occupancy levels on Internal Rate of Return (IRR).
 
-4. **Cross-Asset Comparative Analytics (`AssetComparator`)**
-   * Simultaneous benchmarking of commercial assets, weighing financial performance metrics, tenant credit profiles, and Weighted Average Lease Term (WALT).
+4. **Cross-Asset Comparative Analysis (`AssetComparator`)**
+   * Side-by-side asset comparison weighing key financial indicators, tenant diversification, and Weighted Average Lease Term (WALT).
 
-5. **AI Investment Advisor & Executive Reporting (`AiAdvisorModal`, `ExecutiveReportModal`)**
-   * Automated generation of investment theses and auditable executive summaries for investment and fiduciary committees.
+5. **Analytical Insights & Summary Reports (`AiAdvisorModal`, `ExecutiveReportModal`)**
+   * Contextual scenario analysis and structured report summaries designed for review and evaluation.
 
 ---
 
@@ -156,4 +156,3 @@ src/
 ---
 
 Software Architecture Ownership - Jastin Bolaños © 2026. Enterprise Technical Demonstration Project.
-
